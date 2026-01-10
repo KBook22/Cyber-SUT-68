@@ -1,6 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import './styles.css';
 
 export default function Page2() {
     const router = useRouter();
@@ -10,32 +12,82 @@ export default function Page2() {
     };
 
     return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: '100vh',
-            gap: '24px'
-        }}>
-            <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Page 2</h1>
+        <div className="elden-quiz-page">
+            {/* Ember Particles */}
+            <div className="particles">
+                {[...Array(20)].map((_, i) => (
+                    <div
+                        key={`small-${i}`}
+                        className="particle ember-small"
+                        style={{
+                            left: `${Math.random() * 100}%`,
+                            animationDelay: `${Math.random() * 6}s`,
+                        }}
+                    />
+                ))}
+                {[...Array(15)].map((_, i) => (
+                    <div
+                        key={`medium-${i}`}
+                        className="particle ember-medium"
+                        style={{
+                            left: `${Math.random() * 100}%`,
+                            animationDelay: `${Math.random() * 8}s`,
+                        }}
+                    />
+                ))}
+                {[...Array(8)].map((_, i) => (
+                    <div
+                        key={`large-${i}`}
+                        className="particle ember-large"
+                        style={{
+                            left: `${Math.random() * 100}%`,
+                            animationDelay: `${Math.random() * 10}s`,
+                        }}
+                    />
+                ))}
+                {[...Array(12)].map((_, i) => (
+                    <div
+                        key={`spark-${i}`}
+                        className="particle ember-spark"
+                        style={{
+                            left: `${Math.random() * 100}%`,
+                            animationDelay: `${Math.random() * 4}s`,
+                        }}
+                    />
+                ))}
+            </div>
 
-            <button
-                onClick={handleNext}
-                style={{
-                    padding: '12px 32px',
-                    fontSize: '1rem',
-                    backgroundColor: '#3b82f6',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    transition: 'background-color 0.2s'
-                }}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
-            >
-                Next →
+            {/* NPC - Left side, cropped at bottom */}
+            <div className="page2-npc-left">
+                <Image
+                    src="/elden-ring-quiz/npc.png"
+                    alt="Mysterious NPC"
+                    width={700}
+                    height={1050}
+                    className="npc-image-large"
+                    priority
+                />
+            </div>
+
+            {/* Dialog Box - Right side, large */}
+            <div className="page2-dialog-right">
+                <div className="dialog-box-large">
+                    <h2 className="dialog-title">✦ The Sage Speaks ✦</h2>
+                    <p className="dialog-text-large">
+                        Ah... A Tarnished, are we?
+                    </p>
+                    <p className="dialog-text-large">
+                        I sense the flame of ambition within thee... Very well, I shall guide thy path through the Lands Between.
+                    </p>
+                    <p className="dialog-text-large">
+                        The Elden Ring awaits those who are worthy. Proceed, and prove thy worth.
+                    </p>
+                </div>
+            </div>
+
+            {/* Next Button - Right bottom */}
+            <button className="page2-next-btn" onClick={handleNext}>
+                <span>Next →</span>
             </button>
         </div>
     );
