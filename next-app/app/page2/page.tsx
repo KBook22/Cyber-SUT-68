@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Pnpc from './picture/Pnpc.png';
 import './styles.css';
 
 export default function Page2() {
@@ -19,7 +20,7 @@ export default function Page2() {
     // UI States
     const [glitchActive, setGlitchActive] = useState(false);
     const [typedText, setTypedText] = useState('');
-    const fullText = "System Critical... Segmentation Fault... Dimensions Shattered.\n\nYou open your eyes amidst the ruins... This is SUT, but not the SUT you know.";
+    const fullText = "System Critical... Segmentation Fault... Dimensions Shattered.\n\nYou open your eyes amidst the ruins... This is SUT \n\nbut not the SUT you know.";
     const [showInvestigateBtn, setShowInvestigateBtn] = useState(false);
 
     // NPC Dialog States
@@ -139,12 +140,12 @@ export default function Page2() {
             {scene === 2 && (
                 <>
                     {/* NPC */}
-                    <div className="page2-npc-left">
+                    <div className="page2-npc-center">
                         <Image
-                            src="/elden-ring-quiz/npc.png"
+                            src={Pnpc}
                             alt="Unknown Maiden"
-                            width={500}
-                            height={750}
+                            width={800}
+                            height={1200}
                             className="npc-image-large"
                             priority
                         />
@@ -166,8 +167,8 @@ export default function Page2() {
             {scene === 3 && (
                 <>
                     {/* Background NPC visible but dimmed/passive */}
-                    <div className="page2-npc-left">
-                        <Image src="/elden-ring-quiz/npc.png" alt="NPC" width={500} height={750} className="npc-image-large" />
+                    <div className="page2-npc-center">
+                        <Image src={Pnpc} alt="NPC" width={800} height={1200} className="npc-image-large" />
                     </div>
 
                     <div className="system-alert-overlay">
@@ -193,13 +194,13 @@ export default function Page2() {
             {/* --- SCENE 4: FACTOR 2 - KNOWLEDGE --- */}
             {scene === 4 && (
                 <>
-                    <div className="page2-npc-left">
+                    <div className="page2-npc-center">
                         {/* Red Eyes Effect */}
                         <Image
-                            src="/elden-ring-quiz/npc.png"
+                            src={Pnpc}
                             alt="NPC"
-                            width={500}
-                            height={750}
+                            width={800}
+                            height={1200}
                             className="npc-image-large red-eyes"
                         />
                     </div>
@@ -233,8 +234,8 @@ export default function Page2() {
             {/* --- SCENE 5: THE REVELATION --- */}
             {scene === 5 && (
                 <>
-                    <div className="page2-npc-left">
-                        <Image src="/elden-ring-quiz/npc.png" alt="NPC" width={500} height={750} className="npc-image-large" />
+                    <div className="page2-npc-center">
+                        <Image src={Pnpc} alt="NPC" width={800} height={1200} className="npc-image-large" />
                     </div>
 
                     <div className="page2-dialog-right">
@@ -246,7 +247,7 @@ export default function Page2() {
                             <p className="dialog-text-large">
                                 Go now. Restore the dimension.
                             </p>
-                            <button className="proceed-btn" onClick={handleProceed} style={{ width: '100%', marginTop: '20px' }}>
+                            <button className="proceed-btn" onClick={handleProceed}>
                                 [ Proceed to the Machine Core ]
                             </button>
                         </div>
