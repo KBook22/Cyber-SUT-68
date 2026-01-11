@@ -1275,3 +1275,322 @@
         padding: 30px 25px;
     }
 }
+
+/* ===== New Story Elements (Scene 1-5) ===== */
+
+/* Typing Effect */
+.typing-container {
+    font-family: 'Courier New', monospace;
+    color: #fff;
+    text-shadow: 0 0 5px #fff;
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    min-height: 150px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+.typing-text {
+    white-space: pre-wrap;
+}
+
+/* Glitch Effect */
+.glitch-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 255, 0, 0.1);
+    z-index: 100;
+    pointer-events: none;
+    animation: glitch-anim 0.2s infinite;
+}
+
+@keyframes glitch-anim {
+    0% {
+        transform: translate(0)
+    }
+
+    20% {
+        transform: translate(-5px, 5px)
+    }
+
+    40% {
+        transform: translate(-5px, -5px)
+    }
+
+    60% {
+        transform: translate(5px, 5px)
+    }
+
+    80% {
+        transform: translate(5px, -5px)
+    }
+
+    100% {
+        transform: translate(0)
+    }
+}
+
+
+/* System Alert & MFA (Golden Theme) */
+.system-alert-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    animation: fadeIn 0.5s;
+}
+
+.system-alert {
+    background: linear-gradient(180deg, rgba(20, 18, 25, 0.95) 0%, rgba(10, 10, 15, 0.98) 100%);
+    border: 2px solid var(--gold-primary);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow:
+        0 0 30px rgba(201, 162, 39, 0.2),
+        inset 0 0 60px rgba(201, 162, 39, 0.05);
+    width: 90%;
+    max-width: 500px;
+    text-align: left;
+    font-family: var(--font-display);
+    position: relative;
+}
+
+.system-alert::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+}
+
+.system-header {
+    color: var(--gold-primary);
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--gold-dark);
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    letter-spacing: 0.1em;
+}
+
+.mfa-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.mfa-label {
+    color: var(--gold-light);
+    font-size: 1rem;
+    font-family: var(--font-display);
+}
+
+.mfa-input-group input {
+    background: rgba(10, 10, 15, 0.8);
+    border: 1px solid var(--gold-primary);
+    color: var(--gold-light);
+    padding: 12px;
+    font-family: var(--font-body);
+    width: 100%;
+    font-size: 1.1rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.mfa-input-group input:focus {
+    border-color: var(--gold-light);
+    box-shadow: 0 0 15px rgba(201, 162, 39, 0.2);
+}
+
+.mfa-btn {
+    background: rgba(20, 18, 25, 0.85);
+    border: 1px solid var(--gold-primary);
+    color: var(--gold-primary);
+    padding: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-family: var(--font-display);
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.mfa-btn:hover {
+    background: var(--gold-primary);
+    color: var(--bg-dark);
+    box-shadow: 0 0 20px rgba(201, 162, 39, 0.4);
+}
+
+.feedback-msg {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    min-height: 1.5em;
+}
+
+.feedback-msg.error {
+    color: #ff0000;
+}
+
+.feedback-msg.success {
+    color: #00ff00;
+}
+
+/* NPC Variations */
+.npc-image-large.red-eyes {
+    filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.8)) contrast(1.2);
+}
+
+/* Scene 1 Overlay */
+.scene-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.scene-overlay.fade-out {
+    animation: fadeOut 2s forwards;
+    pointer-events: none;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+/* Buttons */
+.investigate-btn {
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 15px 30px;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: all 0.3s;
+    animation: fadeIn 2s ease 3s backwards;
+    /* Delay appearance */
+}
+
+.investigate-btn:hover {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.proceed-btn {
+    background: rgba(20, 18, 25, 0.85);
+    border: 2px solid var(--gold-primary);
+    color: var(--gold-primary);
+    padding: 15px 40px;
+    font-weight: bold;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 30px;
+    border-radius: 4px;
+    width: auto;
+    /* Contain it */
+    align-self: center;
+    /* Center in flex container */
+    transition: all 0.3s ease;
+    animation: fadeIn 2s ease;
+}
+
+.proceed-btn:hover {
+    background: var(--gold-primary);
+    color: var(--bg-dark);
+    box-shadow: 0 0 20px rgba(201, 162, 39, 0.6);
+}
+
+/* ===== UI Polish Updates ===== */
+
+/* 1. Scene 1: Text Only (Remove box) */
+.typing-container {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    text-shadow: 0 0 10px #0f0;
+    /* Enhanced text glow since bg is gone */
+    margin-top: 10vh;
+    /* Position slightly down */
+}
+
+/* 2. NPC Centered and Larger */
+.page2-npc-center {
+    position: fixed;
+    left: 50%;
+    bottom: -50px;
+    /* Slight offset bottom */
+    transform: translateX(-50%);
+    z-index: 5;
+    animation: npc-appear 1.5s ease;
+    width: 600px;
+    /* Increased base width container */
+    max-width: 90vw;
+}
+
+.page2-npc-center img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 60px rgba(201, 162, 39, 0.4));
+}
+
+/* 3. Dialog Right Aligned & Button Fix */
+.page2-dialog-right-aligned {
+    position: fixed;
+    right: 5%;
+    bottom: 20%;
+    width: 400px;
+    max-width: 90%;
+    z-index: 20;
+    /* Above NPC */
+}
+
+.dialog-box-large {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Next Button - Below Text in Dialog */
+.page2-next-btn {
+    position: static !important;
+    /* Remove fixed positioning */
+    margin-top: 20px;
+    align-self: flex-end;
+    /* Align to right of the flex container */
+    animation: none;
+    /* Reset animation to avoid re-trigger weirdness */
+    background: rgba(0, 0, 0, 0.8);
+    /* Ensure visibility */
+    width: auto;
+}
