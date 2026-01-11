@@ -1553,10 +1553,31 @@
     /* Slight offset bottom */
     transform: translateX(-50%);
     z-index: 5;
-    animation: npc-appear 1.5s ease;
+    animation: npc-appear-center 1.5s ease forwards;
     width: 600px;
     /* Increased base width container */
     max-width: 90vw;
+}
+
+/* Animation for centered NPC - keeps translateX(-50%) throughout */
+@keyframes npc-appear-center {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8) translateY(50px);
+        filter: blur(10px) drop-shadow(0 0 30px rgba(201, 162, 39, 0.3));
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: translateX(-50%) scale(0.9) translateY(25px);
+        filter: blur(5px) drop-shadow(0 0 50px rgba(201, 162, 39, 0.5));
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1) translateY(0);
+        filter: blur(0) drop-shadow(0 0 30px rgba(201, 162, 39, 0.3));
+    }
 }
 
 .page2-npc-center img {
