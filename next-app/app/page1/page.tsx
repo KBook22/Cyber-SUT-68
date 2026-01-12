@@ -11,6 +11,7 @@ import TypingOverlay from '../page2/components/TypingOverlay';
 import Npc_1 from './picture/Npc_1.png';
 
 import { Challenge, challenges } from './challenge'
+import SplashScreen from '../components/SplashScreen'; // Import SplashScreen
 
 const crashDialogs = [
   "FATAL ERROR: Decryption Successful...",
@@ -41,6 +42,9 @@ export default function Page1() {
   const [preTaskInput, setPreTaskInput] = useState('');
   const [isPreTaskSolved, setIsPreTaskSolved] = useState(false);
   const [preTaskStatus, setPreTaskStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  // Splash Screen State
+  const [showSplash, setShowSplash] = useState(true);
 
   const currentChallenge = challenges[currentChallengeIndex];
 
@@ -121,13 +125,22 @@ export default function Page1() {
     }
   };
 
+  if (showSplash) 
+    return (
+      <SplashScreen
+        chapter="CHAPTER 1"
+        title="The Forbidden Knowledge"
+        subtitle="Cryptography Protocol Override"
+        onComplete={() => setShowSplash(false)}
+      />
+    );
+
   return (
     <div className={`app-container 
       ${explosionStage === 1 ? 'stage-alarm' : ''} 
       ${explosionStage === 2 ? 'stage-glitch' : ''}
       ${explosionStage === 3 ? 'stage-critical' : ''}
     `}>
-
       {/* Background */}
       <div
         className="bg-layer"
