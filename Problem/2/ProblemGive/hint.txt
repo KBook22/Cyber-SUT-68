@@ -1,0 +1,7 @@
+
+cipher = V3BuTnBPbkt6WGR2Z09keEZ6Tw==
+
+จงแก้ chipher ที่ให้โดยใช้
+Base64 + Caesar Cipher +5 (ไปข้างหน้า)
+
+ต้องตอบในรูปแบบ FLAG{cipher}
