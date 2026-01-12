@@ -1,8 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import './styles.css';
+
+// Import รูปภาพ
+import Npc_1 from './picture/Npc_1.png';
+import Number1 from './picture/Number1.jpg';
+import Number3 from './picture/Number3.jpg';
+import Number4 from './picture/Number4.jpg';
+import Number5 from './picture/Number5.jpg';
+import Number6 from './picture/Number6.jpg';
+import Orb2 from './picture/Orb2.png';
 
 interface Challenge {
   id: number;
@@ -11,29 +20,52 @@ interface Challenge {
   hints: { title: string; content: string }[];
   downloadFile?: string;
   flag: string;
+  backgroundImage: string;
+  npcDialogue: string[];
+  preTask?: {
+    question: string;
+    answer: string;
+    lockedContentTitle: string;
+    lockedContent: string;
+    lockedFile?: string;
+  };
 }
 
 const challenges: Challenge[] = [
   {
     id: 1,
-    title: 'ด่านที่ 1: รหัสซีซาร์โบราณ',
-    description: 'ชาวโรมันโบราณใช้รหัสลับง่ายๆ ในการส่งข่าวสาร คุณถอดรหัสข้อความนี้ได้ไหม?',
+    title: 'ด่านที่  1  :  ไม่ว่าจะเกิดอะไรขึ้น จงเดินหน้าต่อไป',
+    description: '--  เลขท้ายของปีพุทธศักราชของวันที่มหาวิทยาลัยเทคโนโลยีสุรนารีให้ความสำคัญ',
     hints: [
-      { title: 'ข้อความเข้ารหัส', content: 'IODJ{Fdhvdu_Flskhu_Pdvwhu}' },
-      { title: 'Hint 1', content: 'ลองเลื่อนตัวอักษรแต่ละตัวด้วยจำนวนคงที่' },
-      { title: 'Hint 2', content: 'ค่า shift น้อยกว่า 5' }
+      { title: 'ข้อความเข้ารหัส', content: 'cipher = EbiilPrOxKxobB_rKfsbopfQvDl_qlQbzekl' },
+      { title: 'Hint', content: 'Caesar Cipher\n27 กรกฎาคม 253..\nต้องตอบในรูปแบบ FLAG{cipher}' }
     ],
-    flag: 'FLAG{Caesar_Cipher_Master}'
+    flag: 'FLAG{HelloSuRaNareE_uNiversiTyGo_toTechno}',
+    backgroundImage: Number1.src,
+    npcDialogue: [
+      'ในที่สุดก็มาถึง มหาวิทยาลัยเทคโนโลยีสุรนารี ได้สักที',
+      'ปิดเทอมแบบนี้เงียบเหงาจังแฮะ',
+      'ฉันดันต้องมาเอาของที่อาจารย์สั่ง',
+      'แต่อาจารย์ดันไม่บอกสถานที่ที่ต้องไปไว้น่ะสิ',
+      'เหมือนฉันต้องแก้ปริศนาเพื่อหาทางไปต่อแล้วล่ะ !'
+    ]
   },
   {
     id: 2,
-    title: 'ด่านที่ 2: ห้องสมุด',
-    description: 'ความลับแห่งห้องสมุดถูกเข้ารหัสไว้ คุณจะช่วยถอดรหัสได้ไหม?',
+    title: 'ด่านที่ 2: ตั๋วรถบัสปริศนา',
+    description: 'มหาลัยกว้างเกินกว่าจะเดินไหว คุณต้องหาตั๋วรถบัส',
     hints: [
-      { title: 'ข้อความเข้ารหัส', content: 'RkxBR3tCYXNlNjRfSXNfTm90X0VuY3J5cHRpb259' },
-      { title: 'Hint', content: 'นี่คือระบบการเข้ารหัสทั่วไปที่ใช้ในการส่งข้อมูล ไม่ใช่การเข้ารหัสจริงๆ' }
+      { title: 'รหัสรับตั๋ว', content: 'cipher = V3BuTnBPbkt6WGR2Z09keEZ6Tw==' },
+      { title: 'Hint', content: 'Base64 + Caesar Cipher +5  (ไปข้างหน้า)\nต้องตอบในรูปแบบ FLAG{cipher}' }
     ],
-    flag: 'FLAG{Base64_Is_Not_Encryption}'
+    flag: 'FLAG{BusSuTsPeCialTicKeT}',
+    backgroundImage: Number3.src,
+    npcDialogue: [
+      'ฟู่ว มาถึงสักที',
+      'อ๊ะ! นั่นมันรถบัส EV นี่นา',
+      'แต่ดูเหมือนระบบจะล็อคอยู่ ต้องใช้ "ตั๋วรถบัส" ถึงจะขึ้นได้',
+      'ช่วยฉันถอดรหัสเพื่อออกตั๋วรถบัสหน่อยสิ!'
+    ]
   },
   {
     id: 3,
@@ -72,17 +104,54 @@ const challenges: Challenge[] = [
       }
     ],
     downloadFile: '/challenges/flag.png.enc',
-    flag: 'FLAG{ThisIsThePlaceYouNeedToGoHurryUp67}'
+    flag: 'FLAG{ThisIsThePlaceYouNeedToGoHurryUp67}',
+    backgroundImage: Number4.src,
+    npcDialogue: [
+      'เยี่ยม! ได้ขึ้นรถสักที แอร์เย็นฉ่ำเลย~',
+      'ทีนี้... ปัญหาคือ "ของ" ที่ต้องไปเอา มันอยู่ที่อาคารไหนนะ?',
+      'อาจารย์ส่งไฟล์ภาพที่บันทึกพิกัดมาให้ แต่มันถูกเข้ารหัส AES ไว้ !',
+      'ถ้าแก้รหัสนี้ได้ เราก็จะรู้อาคารเป้าหมาย !!'
+    ]
   },
   {
     id: 4,
-    title: 'ด่านที่ 4: ปริศนา XOR',
-    description: 'ข้อความถูกเข้ารหัสด้วย XOR cipher คุณหาคีย์และถอดรหัสได้ไหม?',
+    title: 'ด่านที่ 4: ยืนยันตัวตนหน้าประตู',
+    description: 'RSA + Base64',
     hints: [
-      { title: 'Encrypted Hex', content: '1c0a1e5a0b1e1a5a1c1b1e5a0a1d' },
-      { title: 'Hint', content: 'คีย์เป็นตัวอักษรตัวเดียว ลองตัวอักษรทั่วไป เช่น space, ตัวอักษร หรือตัวเลข' }
+      { title: 'คำแนะนำ', content: 'Key = 67 72 69 69 82 76 69 65 68 69 82 \n32 79 78 69 84 87 79 79 78 69 84 87 79 84 72 82 69 \n69 79 78 69 84 87 79 79 78 69 84 87 79 79 78 69' }
     ],
-    flag: 'FLAG{XOR_Key_Found}'
+    // --- ส่วนที่เพิ่มใหม่สำหรับด่าน 4 ---
+    preTask: {
+      question: 'ถอดรหัส ASCII ออกมาเป็น..',
+      answer: '1212312121', // คำตอบคือ ADMIN
+      lockedContentTitle: 'CRITICAL DATA: Private Key',
+      lockedContent: `-----BEGIN RSA PRIVATE KEY-----
+MIICXQIBAAKBgQDYcsUSuvnrgvGzw8UXfrZbqEAvj1amsEK8S8ey2SouwDE+gi+b
+lUC5+e8uiMiarpiJmaSbhEtzUttC9xC6T9QK3zINHK5xdikReKrEeXZhtKIXINlH
+tj3YI5qY/pOSg+bDmlIN4bYADe/AgiiYmxBf2aNICqzpvRPDulNjFB49bwIDAQAB
+AoGBALp5HhmF5jwlArCZj5ovO1H5wNp4hfFzVvs72h7WAwZl48bzh6plSm8uyQXx
+J8pDcvzQ1kR5FDuVfXrSuaGZlpX0vKirolUfVPxmmaRX2l1SN1PmeIG0M2rJWIIP
+lXK+Jev1zXhH03hSnsvXjqYXmRwqdEsqXdfNxIIW0QSqWjShAkEA+2H/F4xsuWP5
+Cb/N0ByJ2JWDDodz8WxPNzNmQ7SzeEjJ9IfZEGBCBH4oLjO0kSBYJ86C6oairx1U
+C/eZ11jE3wJBANxsgt8jGBz13Y9QVS1c2TjBR6+6bscMeUXWQ4KglI1I7ty7cDjh
+oeEz+XcI5G15T2dJ1CTiEf050XZLOtnsiXECQHOg2tY5GFWaH5YVbJTaW6mM9BB9
+y53z5OgOM27XMmoUiRh6WCTJMfShFthRni/XAdWljuBTd4c25U7v4AqG4V8CQQC5
+q53Bn6ocGu56Xcyh3WgMaqKb34qYmGU+8nEDg4geSqUJwcmR4F2feUxVfGQN4vWD
+p6jPOK62gxFxd4UnNBvBAkBYRd4bDkZcnVqmDXhnUn9f8LdUzFNfyM6U3yePA77X
+tsLBoD17446C+W89gAip89MZlAJdPEXhBqKCThLuZJiw
+-----END RSA PRIVATE KEY-----`,
+      lockedFile: '/challenges/cipher.bin' // ไฟล์ที่จะปรากฏเมื่อตอบถูก
+    },
+    // --------------------------------
+    flag: 'UNAME{DyNaMiTE007}',
+    backgroundImage: Number5.src,
+    npcDialogue: [
+      'ถึงแล้วอาคาร F11 ที่เรารัก',
+      'อ..เอ๊ะ... ประตูล็อคระบบนิรภัย',
+      'มันบอกว่าต้องยืนยันตัวตนด้วยการแก้รหัส',
+      'นี่มันระบบรักษาความปลอดภัยหรือข้อสอบเนี่ย...',
+      'สิ่งศักดิ์สิทธิ์ สิ่งศักดิ์สิทธิ์ สิ่งศักดิ์สิทธิ์ !!!!'
+    ]
   },
   {
     id: 5,
@@ -91,9 +160,7 @@ const challenges: Challenge[] = [
     hints: [
       {
         title: 'พารามิเตอร์ RSA',
-        content: `n = 3233
-e = 17
-ciphertext = [604, 624, 2412, 690, 3000, 529, 2412, 1773, 538]`
+        content: `n = 3233\ne = 17\nciphertext = [604, 624, 2412, 690, 3000, 529, 2412, 1773, 538]`
       },
       {
         title: 'Hint',
@@ -107,22 +174,38 @@ p และ q เป็นจำนวนเฉพาะที่เล็กพ
 แปลงตัวเลขที่ได้เป็น ASCII characters`
       }
     ],
-    flag: 'PASS{W0rkH4rd2}'
+    flag: 'PASS{W0rkH4rd2}',
+    backgroundImage: Number6.src,
+    npcDialogue: [
+      'เอ๊ะ ยังต้องกรอก Password อีกหรอเนี่ย !!',
+      'ดูเหมือนจะเป็นระบบ RSA แต่ตัวเลขดูไม่เยอะมาก',
+      'ไหวชิล เราทำได้!'
+    ]
   },
-  {
+{
     id: 6,
-    title: '⚠️ ด่านสุดท้าย: ประตูมิติมืด',
-    description: '🔴 คำเตือน: คุณกำลังจะเข้าสู่อาณาจักรอันตราย นี่คือโอกาสสุดท้ายที่จะหันกลับ รหัสลับข้างหน้าเป็นผู้พิทักษ์ประตูระหว่างสองโลก เฉพาะผู้ที่สามารถถอดรหัส Vigenère ได้เท่านั้นที่จะผ่านไปได้...',
+    title: 'ด่านสุดท้าย: ของเล่นต้องห้าม?',
+    description: 'ด้วยความซนและมือบอล คุณเจอวัตถุหน้าตาเหมือนรูบิคผสมลูกแก้ว เลยลอง "หมุนย้อนกลับ" ดูเล่นๆ...',
     hints: [
-      {
-        title: '⚠️ สัญญาณอันตราย',
-        content: 'เบื้องหลังด่านนี้คืออาณาจักรแห่งความมืดและความลึกลับ ดำเนินต่อด้วยความระมัดระวัง\n\nประตูถูกปิดผนึกด้วยรหัสโบราณ...'
+      { 
+        title: 'Action', 
+        content: 'คุณลอง "หมุนกลับหลัง" (Reverse) วัตถุชิ้นนั้น...' 
       },
-      { title: 'ข้อความเข้ารหัส', content: 'JPCG{Omiirevm_Gmtliv_Xssp}' },
-      { title: 'Hint 1', content: 'ความยาวของคีย์เวิร์ดคือ 4 ตัวอักษร' },
-      { title: 'Hint 2', content: 'คีย์เวิร์ดอาจเกี่ยวข้องกับความปลอดภัยหรือการเข้ารหัส' }
+      { 
+        title: 'Hologram Message', 
+        content: 'ข้อความที่ลอยออกมา:\n}niraP.TsInioctiBfOretropmIdnAraiLaeRehT{GALF' 
+      }
     ],
-    flag: 'FLAG{Vigenere_Cipher_Done}'
+    flag: 'FLAG{TheRealLiarAndImporterOfBitcoinIsT.Parin}', 
+    backgroundImage: Orb2.src,
+    npcDialogue: [
+      'เย้! เข้ามาได้แล้ววว',
+      'เอ๊ะ! ไอ้ลูกกลมๆ สีม่วงตรงมุมห้องนั่นมันอะไรน่ะ?',
+      'ดูมีวงแหวนหมุนได้เหมือนของเล่นเลยแฮะ... สวยจัง',
+      'ไหนขอลอง "บิด" เล่นดูหน่อยซิ... กริ๊ก!',
+      'เฮ้ย! มีข้อความโฮโลแกรมเด้งออกมาแฮะ แต่ทำไมมันอ่านไม่รู้เรื่องเลย',
+      'niraP... GALF? ...',
+    ]
   }
 ];
 
@@ -132,13 +215,68 @@ export default function Page1() {
   const [expandedHints, setExpandedHints] = useState<{ [key: number]: boolean }>({});
   const [flagInput, setFlagInput] = useState('');
   const [submission, setSubmission] = useState<'success' | 'error' | null>(null);
+  
+  // เก็บ ID ด่านที่ผ่านแล้ว
   const [solvedChallenges, setSolvedChallenges] = useState<Set<number>>(new Set());
 
-  const currentChallenge = challenges[currentChallengeIndex];
-  const isDangerTheme = currentChallenge.id === 6;
+  // States
+  const [dialogueIndex, setDialogueIndex] = useState(0);
+  const [showDialogue, setShowDialogue] = useState(true);
+  
+  // Explosion States (0=None, 1=Alarm, 2=Glitch/Shake, 3=Critical, 4=Whiteout, 5=Blackout)
+  const [explosionStage, setExplosionStage] = useState(0);
 
+  // Pre-Task States
+  const [preTaskInput, setPreTaskInput] = useState('');
+  const [isPreTaskSolved, setIsPreTaskSolved] = useState(false);
+  const [preTaskStatus, setPreTaskStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const currentChallenge = challenges[currentChallengeIndex];
+
+  // Handlers
   const toggleHint = (hintIndex: number) => {
     setExpandedHints(prev => ({ ...prev, [hintIndex]: !prev[hintIndex] }));
+  };
+
+  const changeLevel = (newIndex: number) => {
+    setCurrentChallengeIndex(newIndex);
+    setFlagInput('');
+    setSubmission(null);
+    setExpandedHints({});
+    setDialogueIndex(0);
+    setShowDialogue(true);
+    // Reset Pre-task
+    setPreTaskInput('');
+    setIsPreTaskSolved(false);
+    setPreTaskStatus('idle');
+  };
+
+  const handlePreTaskSubmit = () => {
+    if (currentChallenge.preTask && preTaskInput.trim() === currentChallenge.preTask.answer) {
+      setPreTaskStatus('success');
+      setTimeout(() => setIsPreTaskSolved(true), 1000);
+    } else {
+      setPreTaskStatus('error');
+      setTimeout(() => setPreTaskStatus('idle'), 1500);
+    }
+  };
+
+  // ลำดับการระเบิด (Cinematic Sequence)
+  const runExplosionSequence = () => {
+    // Stage 1: Alarm (Red Pulse) - 0s
+    setExplosionStage(1);
+
+    // Stage 2: Glitch & Shake - 2s
+    setTimeout(() => setExplosionStage(2), 2000);
+
+    // Stage 3: Critical (Color Invert + Heavy Shake) - 5s
+    setTimeout(() => setExplosionStage(3), 5000);
+
+    // Stage 4: Whiteout - 7s
+    setTimeout(() => setExplosionStage(4), 7000);
+
+    // Stage 5: Blackout - 8.5s
+    setTimeout(() => setExplosionStage(5), 8500);
   };
 
   const handleSubmit = () => {
@@ -146,156 +284,196 @@ export default function Page1() {
     if (input === currentChallenge.flag) {
       setSubmission('success');
       setSolvedChallenges(prev => new Set(prev).add(currentChallenge.id));
-      setTimeout(() => {
-        setSubmission(null);
-      }, 3000);
+
+      if (currentChallenge.id === 6) {
+        // --- ด่านสุดท้าย: เริ่มระเบิด ---
+        setTimeout(() => {
+          runExplosionSequence();
+        }, 1000);
+      } else {
+        // --- ด่านทั่วไป: ไปต่ออัตโนมัติ (Auto Advance) ---
+        setTimeout(() => {
+          changeLevel(currentChallengeIndex + 1);
+        }, 1500); // รอ 1.5 วินาทีให้เห็นคำว่า ACCESS GRANTED
+      }
     } else {
       setSubmission('error');
-      setTimeout(() => {
-        setSubmission(null);
-      }, 2000);
+      setTimeout(() => setSubmission(null), 2000);
     }
   };
 
-  const goToNextChallenge = () => {
-    if (currentChallengeIndex < challenges.length - 1) {
-      setCurrentChallengeIndex(prev => prev + 1);
-      setFlagInput('');
-      setSubmission(null);
-      setExpandedHints({});
+  const nextDialogue = () => {
+    if (dialogueIndex < currentChallenge.npcDialogue.length - 1) {
+      setDialogueIndex(prev => prev + 1);
+    } else {
+      setShowDialogue(false);
     }
-  };
-
-  const goToPrevChallenge = () => {
-    if (currentChallengeIndex > 0) {
-      setCurrentChallengeIndex(prev => prev - 1);
-      setFlagInput('');
-      setSubmission(null);
-      setExpandedHints({});
-    }
-  };
-
-  const goToChallenge = (index: number) => {
-    setCurrentChallengeIndex(index);
-    setFlagInput('');
-    setSubmission(null);
-    setExpandedHints({});
   };
 
   return (
-    <div className={`ctf-container-new ${isDangerTheme ? 'danger-theme' : ''}`}>
-      {/* Challenge Navigation Dots */}
-      <div className="challenge-nav-dots">
-        {challenges.map((challenge, index) => (
-          <button
-            key={challenge.id}
-            className={`nav-dot ${index === currentChallengeIndex ? 'active' : ''} ${solvedChallenges.has(challenge.id) ? 'solved' : ''}`}
-            onClick={() => goToChallenge(index)}
-            title={challenge.title}
-          >
-            {challenge.id}
-          </button>
-        ))}
-      </div>
+    <div className={`app-container 
+      ${explosionStage === 1 ? 'stage-alarm' : ''} 
+      ${explosionStage === 2 ? 'stage-glitch' : ''}
+      ${explosionStage === 3 ? 'stage-critical' : ''}
+    `}>
 
-      {/* Main Challenge Card */}
-      <div className="challenge-view-card">
-        {/* Challenge Icon */}
-        <div className="challenge-icon">
-          {isDangerTheme ? '⚠️' : '👁️'}
+      {/* Background */}
+      <div
+        className="bg-layer"
+        style={{ backgroundImage: `url(${currentChallenge.backgroundImage})` }}
+      />
+      <div className="bg-overlay" />
+
+      {/* Special Overlays for Effects */}
+      {explosionStage >= 1 && <div className="alarm-overlay"></div>}
+      {explosionStage === 4 && <div className="whiteout-overlay"></div>}
+
+      {/* Black Screen Ending */}
+      {explosionStage === 5 && (
+        <div className="black-screen">
+          <div className="glitch-content">
+            <h1 className="system-failure-text"></h1>
+            <button className="btn-continue" onClick={() => router.push('/page2')}>
+              ... &gt;
+            </button>
+          </div>
         </div>
+      )}
 
-        {/* Challenge Title */}
-        <h2 className="challenge-view-title">{currentChallenge.title}</h2>
-        <p className="challenge-view-description">{currentChallenge.description}</p>
-
-        {/* Hints Section */}
-        <div className="hints-section-new">
-          {currentChallenge.hints.map((hint, index) => (
-            <div key={index} className="hint-item-new">
-              <button
-                className="hint-header-new"
-                onClick={() => toggleHint(index)}
-              >
-                <span>💡 {hint.title}</span>
-                <span className="hint-arrow">{expandedHints[index] ? '▼' : '▶'}</span>
-              </button>
-              {expandedHints[index] && (
-                <div className="hint-content-new">
-                  <pre>{hint.content}</pre>
-                </div>
-              )}
+      {/* Main Layout (ซ่อนเมื่อจบเกม) */}
+      {explosionStage !== 5 && (
+        <>
+          {/* Top Bar / Navigation */}
+          <div className="top-nav">
+            <div className="level-indicators">
+              {challenges.map((c, i) => (
+                <div
+                  key={c.id}
+                  className={`level-dot ${i === currentChallengeIndex ? 'active' : ''} ${solvedChallenges.has(c.id) ? 'solved' : ''}`}
+                  // เอา onClick ออกทั้งหมด เพื่อห้ามย้อนหลังหรือกดข้าม
+                  style={{ cursor: 'default' }} 
+                />
+              ))}
             </div>
-          ))}
-        </div>
-
-        {/* Download Button for Challenge 3 */}
-        {currentChallenge.downloadFile && (
-          <a
-            href={currentChallenge.downloadFile}
-            download="flag.png.enc"
-            className="download-btn"
-          >
-            📥 ดาวน์โหลดไฟล์ flag.png.enc
-          </a>
-        )}
-
-        {/* Flag Input */}
-        <div className="flag-input-section">
-          <input
-            type="text"
-            className={`flag-input-new ${submission || ''}`}
-            placeholder="ใส่คำตอบ..."
-            value={flagInput}
-            onChange={(e) => setFlagInput(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
-          />
-          <button className="submit-btn-new" onClick={handleSubmit}>
-            ส่งคำตอบ
-          </button>
-        </div>
-
-        {/* Submission Feedback */}
-        {submission === 'success' && (
-          <div className="feedback-success">
-            ✓ ถูกต้อง! ผ่านด่านนี้แล้ว!
-            {currentChallenge.id === 6 && (
-              <button
-                className="next-realm-btn-new"
-                onClick={() => router.push('/page2')}
-              >
-                🚪 เข้าสู่อาณาจักรมืด →
-              </button>
-            )}
           </div>
-        )}
-        {submission === 'error' && (
-          <div className="feedback-error">
-            ✗ คำตอบไม่ถูกต้อง ลองใหม่อีกครั้ง!
-          </div>
-        )}
-      </div>
 
-      {/* Progress Counter */}
-      <div className="progress-counter">
-        ด่านที่เคลียร์: {solvedChallenges.size} / {challenges.length}
-      </div>
+          {/* Dialogue */}
+          {showDialogue ? (
+            <div className="novel-overlay" onClick={nextDialogue}>
+              <div className="character-sprite">
+                <img src={Npc_1.src} alt="NPC" />
+              </div>
+              <div className="dialogue-box">
+                <div className="dialogue-name">Someone</div>
+                <p className="typing-text">{currentChallenge.npcDialogue[dialogueIndex]}</p>
+                <div className="dialogue-next">
+                  {dialogueIndex < currentChallenge.npcDialogue.length - 1 ? '▼' : 'START MISSION ►'}
+                </div>
+              </div>
+            </div>
+          ) : (
+            /* Console */
+            <div className="console-wrapper">
+              <div className="console-card">
+                <div className="console-header"></div>
+                <div className="console-body">
+                  <div className="mission-tag">STORY_MISSION_0{currentChallenge.id}</div>
+                  <h1 className="mission-title">{currentChallenge.title}</h1>
+                  <p className="mission-desc">{currentChallenge.description}</p>
 
-      {/* Navigation Arrows */}
-      <button
-        className="nav-arrow nav-arrow-left"
-        onClick={goToPrevChallenge}
-        disabled={currentChallengeIndex === 0}
-      >
-        ←
-      </button>
-      <button
-        className="nav-arrow nav-arrow-right"
-        onClick={goToNextChallenge}
-        disabled={currentChallengeIndex === challenges.length - 1}
-      >
-        →
-      </button>
+                  {/* Hints */}
+                  <div className="hints-container">
+                    {currentChallenge.hints.map((hint, i) => (
+                      <div key={i} className="hint-block">
+                        <button
+                          className={`hint-btn ${expandedHints[i] ? 'open' : ''}`}
+                          onClick={() => toggleHint(i)}
+                        >
+                          <span className="icon">💡</span>
+                          {expandedHints[i] ? hint.title : `HINT ${i + 1}`}
+                          <span className="arrow">▼</span>
+                        </button>
+                        {expandedHints[i] && (
+                          <div className="hint-content"><pre>{hint.content}</pre></div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Pre-Task (ด่าน 4) */}
+                  {currentChallenge.preTask && (
+                    <div className="pre-task-section" style={{ marginTop: '20px', border: '1px solid #4ade80', padding: '15px', borderRadius: '8px', background: 'rgba(0, 20, 0, 0.6)' }}>
+                      {!isPreTaskSolved ? (
+                        <div className="locked-state">
+                          <h3 style={{ color: '#4ade80', fontSize: '1rem', marginBottom: '10px' }}>🔒 RESTRICTED AREA</h3>
+                          <p style={{ fontSize: '0.9rem', marginBottom: '10px', color: '#ccc' }}>{currentChallenge.preTask.question}</p>
+                          <div style={{ display: 'flex', gap: '10px' }}>
+                            <input
+                              type="text"
+                              value={preTaskInput}
+                              onChange={(e) => setPreTaskInput(e.target.value.toUpperCase())}
+                              placeholder="TYPE ANSWER..."
+                              style={{ flex: 1, background: '#111', border: '1px solid #333', color: '#fff', padding: '8px' }}
+                            />
+                            <button
+                              onClick={handlePreTaskSubmit}
+                              style={{ background: preTaskStatus === 'error' ? '#ef4444' : '#22c55e', border: 'none', color: '#000', fontWeight: 'bold', padding: '0 15px', cursor: 'pointer' }}
+                            >
+                              {preTaskStatus === 'error' ? 'WRONG' : 'UNLOCK'}
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="unlocked-state">
+                          <h3 style={{ color: '#22c55e', fontSize: '1rem', marginBottom: '10px' }}>🔓 ACCESS GRANTED</h3>
+                          <div style={{ background: '#000', padding: '10px', marginBottom: '10px', fontSize: '0.85rem' }}>
+                            <div style={{ color: '#aaa', marginBottom: '5px' }}>{currentChallenge.preTask.lockedContentTitle}:</div>
+                            <pre style={{ color: '#fff', whiteSpace: 'pre-wrap' }}>{currentChallenge.preTask.lockedContent}</pre>
+                          </div>
+                          {currentChallenge.preTask.lockedFile && (
+                            <a href={currentChallenge.preTask.lockedFile} download className="download-link" style={{ display: 'inline-block', width: '100%' }}>
+                              💾 Download: cipher.bin
+                            </a>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Download */}
+                  {currentChallenge.downloadFile && (
+                    <a href={currentChallenge.downloadFile} download className="download-link">
+                      📂 Download Evidence File
+                    </a>
+                  )}
+
+                  {/* Input */}
+                  <div className="input-section" style={{ marginTop: '30px' }}>
+                    <label>ENTER FINAL FLAG</label>
+                    <div className="input-row">
+                      <input
+                        type="text"
+                        value={flagInput}
+                        onChange={(e) => setFlagInput(e.target.value)}
+                        onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
+                        disabled={submission === 'success'}
+                      />
+                      <button className="confirm-btn" onClick={handleSubmit} disabled={submission === 'success'}>
+                        CONFIRM &gt;
+                      </button>
+                    </div>
+                    {submission === 'success' && <div className="status-msg success">ACCESS GRANTED... PROCEEDING</div>}
+                    {submission === 'error' && <div className="status-msg error">ACCESS DENIED</div>}
+                  </div>
+                </div>
+                <div className="console-footer"></div>
+              </div>
+
+              {/* เอาปุ่มลูกศรออก (Remove Navigation Arrows) */}
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
