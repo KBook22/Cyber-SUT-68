@@ -10,6 +10,8 @@ import DialogSequence from './components/DialogSequence';
 import SystemAlert from './components/SystemAlert';
 import Particles from './components/Particles';
 
+const npcName = "ผู้พิทักษ์บิตนิรันดร์"
+
 const introNarration = [
   // Scene 3: Waking up in the Ruins (SUT Context)
   "...",
@@ -46,14 +48,14 @@ const knowledge2IntroDialogs = [
 
 const outroDialogs = [
   "บุรุษปริศนา: 'ใช่... เจ้ารู้จักข้า'",
-  "ผู้พิทักษ์บิตนิรันดร์: 'จงฟังให้ดี การแตกสลาย นี้สามารถย้อนกลับได้'",
-  "ผู้พิทักษ์บิตนิรันดร์: 'ลึกลงไปในอาคารเครื่องมือ (F11) เครื่องจักรยักษ์ (Great Engine) รอคอยการฟื้นฟูอยู่'",
+  `${npcName}: 'จงฟังให้ดี การแตกสลาย นี้สามารถย้อนกลับได้'`,
+  `${npcName}: 'ลึกลงไปในอาคารเครื่องมือ (F11) เครื่องจักรยักษ์ (Great Engine) รอคอยการฟื้นฟูอยู่'`,
   
-  "ผู้พิทักษ์บิตนิรันดร์: 'แต่เครื่องจักรนั้นต้องการสัมผัสของ Administrator... อำนาจแห่ง 'Elden Lord''",
-  "ผู้พิทักษ์บิตนิรันดร์: 'เจ้าครอบครองกุญแจอยู่ไม่ใช่รึ? รหัสลับเดียวกับที่ทำให้โลกใบนี้พังทลาย...'",
-  "ผู้พิทักษ์บิตนิรันดร์: 'ใช้ความลับต้องห้ามนั้นสร้างตัวตนใหม่ของเจ้าขึ้นมา มีเพียงต้นเหตุแห่งการทำลายล้างเท่านั้นที่จะนำมาซึ่งการรักษา'",
+  `${npcName}: 'แต่เครื่องจักรนั้นต้องการสัมผัสของ Administrator... อำนาจแห่ง 'Elden Lord''`,
+  `${npcName}: 'เจ้าครอบครองกุญแจอยู่ไม่ใช่รึ? รหัสลับเดียวกับที่ทำให้โลกใบนี้พังทลาย...'`,
+  `${npcName}: 'ใช้ความลับต้องห้ามนั้นสร้างตัวตนใหม่ของเจ้าขึ้นมา มีเพียงต้นเหตุแห่งการทำลายล้างเท่านั้นที่จะนำมาซึ่งการรักษา'`,
   
-  "ผู้พิทักษ์บิตนิรันดร์: 'ไปเถิด จงกลายเป็น Admin ที่ระบบนี้ต้องการ'"
+  `${npcName}: 'ไปเถิด จงกลายเป็น Admin ที่ระบบนี้ต้องการ`
 ];
 
 export default function Page2() {
@@ -156,7 +158,7 @@ export default function Page2() {
                     npcClass="npc-image-large red-eyes"
                     onVerify={async (val) => {
                          // Placeholder validation - accepting any non-empty input for now
-                        if (val.trim().length > 0) {
+                        if (val.trim() === npcName) {
                             return { success: true, message: "ระบบจดจำชื่อได้ กู้คืนสิทธิ์ Admin สำเร็จ" };
                         }
                         return { success: false, message: "Error 403: ไม่พบข้อมูลตัวตนนี้" };
