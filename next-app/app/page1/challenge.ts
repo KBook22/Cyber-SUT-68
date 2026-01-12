@@ -166,7 +166,7 @@ tsLBoD17446C+W89gAip89MZlAJdPEXhBqKCThLuZJiw
     id: 5,
     title: "ด่านที่ 5: ทำลาย RSA",
     description:
-      "ทำลายการเข้ารหัส RSA นี้! modulus มีขนาดเล็กพอที่จะแยกตัวประกอบได้",
+      "ทำลายการเข้ารหัส RSA นี้! modulus มีขนาดเล็กพอที่จะแยกตัวประกอบได้\nตอบในรูปแบบ: PASS{}",
     hints: [
       {
         title: "พารามิเตอร์ RSA",
@@ -181,8 +181,7 @@ p และ q เป็นจำนวนเฉพาะที่เล็กพ
 หา private key d จาก: d ≡ e^(-1) mod φ(n)
 จากนั้นถอดรหัส: m = c^d mod n
 
-แปลงตัวเลขที่ได้เป็น ASCII characters
-ตอบในรูปแบบ: PASS{}`,
+แปลงตัวเลขที่ได้เป็น ASCII characters`,
       },
     ],
     flag: "PASS{W0rkH4rd2}",
