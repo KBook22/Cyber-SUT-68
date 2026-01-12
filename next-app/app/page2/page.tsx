@@ -13,47 +13,47 @@ import Particles from './components/Particles';
 const introNarration = [
   // Scene 3: Waking up in the Ruins (SUT Context)
   "...",
-  "You open your eyes amidst the ruins. The sky is a bruised violet.\nThis is SUT... but not the SUT you know.",
-  "The air hums with the sound of a thousand disconnected sessions.",
-  "You see fragments of code floating in the air, unfinished assignments and lost data.",
-  "Floating debris of the 'Technopolis' surrounds you.\nAhead, a flickering figure stands guarding the path.",
+  "คุณลืมตาตื่นขึ้นท่ามกลางซากปรักหักพัง ท้องฟ้าเป็นสีม่วงช้ำ...\nนี่คือ มทส. ...แต่มันไม่ใช่ มทส. ที่คุณรู้จัก",
+  "อากาศสั่นไหวด้วยเสียงสะท้อนของ Session นับพันที่ขาดการเชื่อมต่อ",
+  "คุณเห็นเศษเสี้ยวของ Code ลอยคว้างกลางอากาศ Assignment ที่ยังทำไม่เสร็จและข้อมูลที่สูญหาย",
+  "ซากปรักหักพังของ 'Technopolis' ลอยอยู่รอบตัว\nเบื้องหน้ามีเงาร่างหนึ่งยืนขวางทางอยู่",
 ];
 
 const meetingDialogs = [
   // Scene 4: Meeting the Maiden (The NPC)
-  "Unknown Maiden: 'Halt, Tarnished Student... or are you merely a glitch in the code?'",
-  "Unknown Maiden: 'The realm is broken. Phantoms and corrupted packets roam these lands.'",
-  "Unknown Maiden: 'I cannot let you pass without proof. If you are truly of this world... prove your existence.'",
-  "Unknown Maiden: 'Show me your coordinates. Anchor your soul to this reality.'"
+  "บุรุษปริศนา: 'หยุดก่อน นักศึกษาผู้มัวหมอง... หรือเจ้าเป็นเพียงแค่ Glitch ในโค้ดกันแน่?'",
+  "บุรุษปริศนา: 'ดินแดนนี้แตกสลายไปแล้ว ภูตผีและ Packet ที่เสียหายเดินเพ่นพ่านไปทั่ว'",
+  "บุรุษปริศนา: 'ข้าให้เจ้าผ่านไปไม่ได้หากไร้ซึ่งข้อพิสูจน์ หากเจ้าเป็นคนของโลกใบนี้จริง... จงพิสูจน์ตัวตนของเจ้ามา'",
+  "บุรุษปริศนา: 'แสดงพิกัดของเจ้ามา ยึดวิญญาณของเจ้าไว้กับความเป็นจริงแห่งนี้ซะ'"
 ];
 
 const locationSuccessDialogs = [
-  "Unknown Maiden: 'The coordinates match... You stand on solid ground.'",
-  "Unknown Maiden: 'Forgive me. You are no glitch. You are a survivor.'"
+  "บุรุษปริศนา: 'พิกัดถูกต้อง... เจ้ายืนอยู่บนพื้นดินที่มั่นคง'",
+  "บุรุษปริศนา: 'อภัยให้ข้าด้วย เจ้าไม่ใช่ Glitch สินะ เจ้าคือผู้รอดชีวิต'"
 ];
 
 const knowledge1IntroDialogs = [
-  "Unknown Maiden: 'But existence in the physical realm is not enough.'",
-  "Unknown Maiden: 'To access the deeper layers, you must prove you know the source.'",
-  "Unknown Maiden: 'Do you carry the mark of the Beginning? The hidden string that weaves this world?'"
+  "บุรุษปริศนา: 'แต่การมีตัวตนในโลกกายภาพนั้นยังไม่เพียงพอ'",
+  "บุรุษปริศนา: 'เพื่อเข้าถึง Layer ที่ลึกกว่านี้ เจ้าต้องพิสูจน์ว่าเจ้ารู้จักต้นกำเนิด (Source)'",
+  "บุรุษปริศนา: 'เจ้ามีตราประทับแห่งจุดเริ่มต้นหรือไม่? สตริงที่ซ่อนเร้นถักทอโลกใบนี้อยู่ (Hidden String)?'"
 ];
 
 const knowledge2IntroDialogs = [
-  "Unknown Maiden: 'Impressive. You see beyond the veil.'",
-  "Unknown Maiden: 'But one final lock remains before I can trust you completely.'",
-  "Unknown Maiden: 'My name... lost to the compiled memory dumps. Do you know who I am?'"
+  "บุรุษปริศนา: 'น่าประทับใจ เจ้ามองเห็นทะลุผ่านม่านหมอก'",
+  "บุรุษปริศนา: 'แต่ยังเหลือล็อคสุดท้ายก่อนที่ข้าจะไว้ใจเจ้าได้อย่างหมดใจ'",
+  "บุรุษปริศนา: 'นามของข้า... สูญหายไปในกอง Memory Dump เจ้าล่วงรู้หรือไม่ว่าข้าคือใคร?'"
 ];
 
 const outroDialogs = [
-  "Maiden: 'Yes... you know me.'",
-  "Maiden: 'Listen closely. The shattering can be reversed.'",
-  "Maiden: 'Deep within the Instrument Building (F1), the Great Engine awaits restoration.'",
+  "บุรุษปริศนา: 'ใช่... เจ้ารู้จักข้า'",
+  "ผู้พิทักษ์บิตนิรันดร์: 'จงฟังให้ดี การแตกสลาย นี้สามารถย้อนกลับได้'",
+  "ผู้พิทักษ์บิตนิรันดร์: 'ลึกลงไปในอาคารเครื่องมือ (F11) เครื่องจักรยักษ์ (Great Engine) รอคอยการฟื้นฟูอยู่'",
   
-  "Maiden: 'But the Engine requires an Administrator's touch... an 'Elden Lord's' authority.'",
-  "Maiden: 'You possess the key, do you not? The same secret code that broke this world...'",
-  "Maiden: 'Use that forbidden secret to forge your new identity. Only the cause of the destruction can bring about the cure.'",
+  "ผู้พิทักษ์บิตนิรันดร์: 'แต่เครื่องจักรนั้นต้องการสัมผัสของ Administrator... อำนาจแห่ง 'Elden Lord''",
+  "ผู้พิทักษ์บิตนิรันดร์: 'เจ้าครอบครองกุญแจอยู่ไม่ใช่รึ? รหัสลับเดียวกับที่ทำให้โลกใบนี้พังทลาย...'",
+  "ผู้พิทักษ์บิตนิรันดร์: 'ใช้ความลับต้องห้ามนั้นสร้างตัวตนใหม่ของเจ้าขึ้นมา มีเพียงต้นเหตุแห่งการทำลายล้างเท่านั้นที่จะนำมาซึ่งการรักษา'",
   
-  "Maiden: 'Go now. Become the Admin this system needs.'"
+  "ผู้พิทักษ์บิตนิรันดร์: 'ไปเถิด จงกลายเป็น Admin ที่ระบบนี้ต้องการ'"
 ];
 
 export default function Page2() {
@@ -90,14 +90,14 @@ export default function Page2() {
 
             {phase === 'MFA_LOCATION' && (
                 <SystemAlert 
-                    authStep="AUTH: 1/3"
-                    message="Your soul drifts... Prove your physical anchor."
-                    hint="Broadcast a signal from the Heart of Faith (Star Plaza)..."
-                    submitLabel="[ Broadcast Location Signal ]"
+                    authStep="ยืนยันตัวตน: 1/3"
+                    message="วิญญาณเจ้าล่องลอย... จงพิสูจน์จุดยึดเหนี่ยวทางกายภาพ"
+                    hint="ส่งสัญญาณจากศูนย์รวมความศรัทธา (ลานดาว/ลานย่าโม)..."
+                    submitLabel="[ ส่งสัญญาณพิกัด ]"
                     onVerify={async () => {
                         return new Promise(resolve => {
                             setTimeout(() => {
-                                resolve({ success: true, message: "Signal Verified. Location Sync Complete: Star Plaza (Ruins)." });
+                                resolve({ success: true, message: "ยืนยันสัญญาณสำเร็จ ซิงค์พิกัดเรียบร้อย: ลานดาว (Ruins)" });
                             }, 1500);
                         });
                     }}
@@ -121,18 +121,18 @@ export default function Page2() {
 
             {phase === 'MFA_KNOWLEDGE_1' && (
                 <SystemAlert 
-                    authStep="AUTH: 2/3"
-                    message="Coordinates valid. Now, verify your essence."
-                    hint="Speak the Hidden Code lurking in the shadows of this world (Source)..."
-                    submitLabel="Verify Token"
+                    authStep="ยืนยันตัวตน: 2/3"
+                    message="พิกัดถูกต้อง ต่อไปจงยืนยันแก่นแท้ของเจ้า"
+                    hint="เอ่ยนามรหัสที่ซ่อนอยู่ในเงามืดของโลกนี้ (Source)..."
+                    submitLabel="ตรวจสอบ Token"
                     hasInput
-                    inputPlaceholder="ENTER_KNOWLEDGE_TOKEN"
+                    inputPlaceholder="ระบุ_KNOWLEDGE_TOKEN"
                     npcClass="npc-image-large red-eyes"
                     onVerify={async (val) => {
                         if (val.trim() === "SUT_GENESIS_2026" || val.trim() === "admin") {
-                            return { success: true, message: "Identity Confirmed. Access Granted." };
+                            return { success: true, message: "ยืนยันตัวตนถูกต้อง อนุญาตให้เข้าถึง" };
                         }
-                        return { success: false, message: "Error 403: Invalid Token. You are but a hollow shell." };
+                        return { success: false, message: "Error 403: Token ไม่ถูกต้อง เจ้าเป็นเพียงร่างที่ว่างเปล่า" };
                     }}
                     onSuccess={() => setPhase('DIALOG_KNOWLEDGE_2')}
                 />
@@ -147,19 +147,19 @@ export default function Page2() {
 
             {phase === 'MFA_KNOWLEDGE_2' && (
                 <SystemAlert 
-                    authStep="AUTH: 3/3"
-                    message="One final verification. Name the administrator."
-                    hint="Who is the guide standing before you?"
-                    submitLabel="Verify Maiden Name"
+                    authStep="ยืนยันตัวตน: 3/3"
+                    message="การตรวจสอบสุดท้าย จงเอ่ยนามของผู้ดูแล"
+                    hint="ผู้นำทางที่ยืนอยู่ตรงหน้าเจ้าคือใคร?"
+                    submitLabel="ตรวจสอบนามแห่ง Maiden"
                     hasInput
-                    inputPlaceholder="ENTER_MAIDEN_NAME"
+                    inputPlaceholder="ระบุ_นาม_บุรุษ"
                     npcClass="npc-image-large red-eyes"
                     onVerify={async (val) => {
                          // Placeholder validation - accepting any non-empty input for now
                         if (val.trim().length > 0) {
-                            return { success: true, message: "Name Recognized. Admin Privileges Restored." };
+                            return { success: true, message: "ระบบจดจำชื่อได้ กู้คืนสิทธิ์ Admin สำเร็จ" };
                         }
-                        return { success: false, message: "Error 403: Unknown Entity." };
+                        return { success: false, message: "Error 403: ไม่พบข้อมูลตัวตนนี้" };
                     }}
                     onSuccess={() => setPhase('OUTRO')}
                 />
@@ -168,7 +168,7 @@ export default function Page2() {
             {phase === 'OUTRO' && (
                 <DialogSequence 
                     dialogs={outroDialogs}
-                    finishLabel="[ Proceed to the Machine Core ]"
+                    finishLabel="[ มุ่งหน้าสู่แกนกลางเครื่องจักร ]"
                     onComplete={() => router.push('/page3')}
                 />
             )}
