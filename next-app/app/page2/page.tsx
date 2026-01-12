@@ -1,258 +1,178 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import Pnpc from './picture/Pnpc.png';
 import './styles.css';
+
+// Components
+import TypingOverlay from './components/TypingOverlay';
+import DialogSequence from './components/DialogSequence';
+import SystemAlert from './components/SystemAlert';
+import Particles from './components/Particles';
+
+const npcName = "ผู้พิทักษ์บิตนิรันดร์"
+
+const introNarration = [
+  // Scene 3: Waking up in the Ruins (SUT Context)
+  "...",
+  "คุณลืมตาตื่นขึ้นท่ามกลางซากปรักหักพัง ท้องฟ้าเป็นสีม่วงช้ำ...\nนี่คือ มทส. ...แต่มันไม่ใช่ มทส. ที่คุณรู้จัก",
+  "อากาศสั่นไหวด้วยเสียงสะท้อนของ Session นับพันที่ขาดการเชื่อมต่อ",
+  "คุณเห็นเศษเสี้ยวของ Code ลอยคว้างกลางอากาศ Assignment ที่ยังทำไม่เสร็จและข้อมูลที่สูญหาย",
+  "ซากปรักหักพังของ 'Technopolis' ลอยอยู่รอบตัว\nเบื้องหน้ามีเงาร่างหนึ่งยืนขวางทางอยู่",
+];
+
+const meetingDialogs = [
+  // Scene 4: Meeting the Maiden (The NPC)
+  "บุรุษปริศนา: 'หยุดก่อน นักศึกษาผู้มัวหมอง... หรือเจ้าเป็นเพียงแค่ Glitch ในโค้ดกันแน่?'",
+  "บุรุษปริศนา: 'ดินแดนนี้แตกสลายไปแล้ว ภูตผีและ Packet ที่เสียหายเดินเพ่นพ่านไปทั่ว'",
+  "บุรุษปริศนา: 'ข้าให้เจ้าผ่านไปไม่ได้หากไร้ซึ่งข้อพิสูจน์ หากเจ้าเป็นคนของโลกใบนี้จริง... จงพิสูจน์ตัวตนของเจ้ามา'",
+  "บุรุษปริศนา: 'แสดงพิกัดของเจ้ามา ยึดวิญญาณของเจ้าไว้กับความเป็นจริงแห่งนี้ซะ'"
+];
+
+const locationSuccessDialogs = [
+  "บุรุษปริศนา: 'พิกัดถูกต้อง... เจ้ายืนอยู่บนพื้นดินที่มั่นคง'",
+  "บุรุษปริศนา: 'อภัยให้ข้าด้วย เจ้าไม่ใช่ Glitch สินะ เจ้าคือผู้รอดชีวิต'"
+];
+
+const knowledge1IntroDialogs = [
+  "บุรุษปริศนา: 'แต่การมีตัวตนในโลกกายภาพนั้นยังไม่เพียงพอ'",
+  "บุรุษปริศนา: 'เพื่อเข้าถึง Layer ที่ลึกกว่านี้ เจ้าต้องพิสูจน์ว่าเจ้ารู้จักต้นกำเนิด (Source)'",
+  "บุรุษปริศนา: 'เจ้ามีตราประทับแห่งจุดเริ่มต้นหรือไม่? สตริงที่ซ่อนเร้นถักทอโลกใบนี้อยู่ (Hidden String)?'"
+];
+
+const knowledge2IntroDialogs = [
+  "บุรุษปริศนา: 'น่าประทับใจ เจ้ามองเห็นทะลุผ่านม่านหมอก'",
+  "บุรุษปริศนา: 'แต่ยังเหลือล็อคสุดท้ายก่อนที่ข้าจะไว้ใจเจ้าได้อย่างหมดใจ'",
+  "บุรุษปริศนา: 'นามของข้า... สูญหายไปในกอง Memory Dump เจ้าล่วงรู้หรือไม่ว่าข้าคือใคร?'"
+];
+
+const outroDialogs = [
+  "บุรุษปริศนา: 'ใช่... เจ้ารู้จักข้า'",
+  `${npcName}: 'จงฟังให้ดี การแตกสลาย นี้สามารถย้อนกลับได้'`,
+  `${npcName}: 'ลึกลงไปในอาคารเครื่องมือ (F11) เครื่องจักรยักษ์ (Great Engine) รอคอยการฟื้นฟูอยู่'`,
+  
+  `${npcName}: 'แต่เครื่องจักรนั้นต้องการสัมผัสของ Administrator... อำนาจแห่ง 'Elden Lord''`,
+  `${npcName}: 'เจ้าครอบครองกุญแจอยู่ไม่ใช่รึ? รหัสลับเดียวกับที่ทำให้โลกใบนี้พังทลาย...'`,
+  `${npcName}: 'ใช้ความลับต้องห้ามนั้นสร้างตัวตนใหม่ของเจ้าขึ้นมา มีเพียงต้นเหตุแห่งการทำลายล้างเท่านั้นที่จะนำมาซึ่งการรักษา'`,
+  
+  `${npcName}: 'ไปเถิด จงกลายเป็น Admin ที่ระบบนี้ต้องการ`
+];
 
 export default function Page2() {
     const router = useRouter();
-
-    // State for Scene Management (1-5)
-    // 1: The Awakening (Black screen, text)
-    // 2: The Phantom Encounter (NPC appears)
-    // 3: First Factor (Location)
-    // 4: Second Factor (Knowledge)
-    // 5: The Revelation (Link to next page)
-    const [scene, setScene] = useState(1);
-
-    // UI States
+    const [phase, setPhase] = useState<'INTRO_TEXT' | 'INTRO_DIALOG' | 'MFA_LOCATION' | 'DIALOG_ACCEPTANCE' | 'DIALOG_KNOWLEDGE_1' | 'MFA_KNOWLEDGE_1' | 'DIALOG_KNOWLEDGE_2' | 'MFA_KNOWLEDGE_2' | 'OUTRO'>('INTRO_TEXT');
     const [glitchActive, setGlitchActive] = useState(false);
-    const [typedText, setTypedText] = useState('');
-    const fullText = "System Critical... Segmentation Fault... Dimensions Shattered.\n\nYou open your eyes amidst the ruins... This is SUT \n\nbut not the SUT you know.";
-    const [showInvestigateBtn, setShowInvestigateBtn] = useState(false);
-
-    // NPC Dialog States
-    const [dialogIndex, setDialogIndex] = useState(0);
-    const npcDialogs = [
-        // Scene 2 Dialogs
-        "Unknown Maiden: \"You... are you still conscious? I thought you had become a Null Pointer by now.\"",
-        "Unknown Maiden: \"This dimension rejects undefined entities. If you wish to proceed and fix what you have broken... you must prove you 'exist'.\""
-    ];
-
-    // MFA States
-    const [locationInput, setLocationInput] = useState(''); // Mock GPS or text input
-    const [knowledgeInput, setKnowledgeInput] = useState('');
-    const [feedbackMsg, setFeedbackMsg] = useState('');
-    const [feedbackType, setFeedbackType] = useState(''); // 'error' or 'success'
-
-    // Typing Effect Logic
-    useEffect(() => {
-        if (scene === 1) {
-            let index = 0;
-            const timer = setInterval(() => {
-                setTypedText((prev) => prev + fullText.charAt(index));
-                index++;
-                if (index === fullText.length) {
-                    clearInterval(timer);
-                    setTimeout(() => setShowInvestigateBtn(true), 1000);
-                }
-            }, 50); // Typing speed
-            return () => clearInterval(timer);
-        }
-    }, [scene]);
-
-    // Handlers
-    const handleInvestigate = () => {
-        // Trigger glitch and move to Scene 2
-        setGlitchActive(true);
-        setTimeout(() => {
-            setGlitchActive(false);
-            setScene(2);
-        }, 800);
-    };
-
-    const handleDialogNext = () => {
-        if (dialogIndex < npcDialogs.length - 1) {
-            setDialogIndex(prev => prev + 1);
-        } else {
-            // End of initial dialog, move to Scene 3 (MFA 1)
-            setScene(3);
-        }
-    };
-
-    const handleLocationSubmit = () => {
-        // Mock verification logic
-        // Any input or just clicking button simulates "Broadcast"
-        setFeedbackMsg("Scanning coordinates...");
-        setFeedbackType("");
-        setTimeout(() => {
-            setFeedbackMsg("Signal Verified. Location Sync Complete: Star Plaza (Ruins).");
-            setFeedbackType("success");
-            setTimeout(() => {
-                setFeedbackMsg("");
-                setScene(4); // Move to Knowledge Factor
-            }, 2000);
-        }, 1500);
-    };
-
-    const handleKnowledgeSubmit = () => {
-        // Check for specific secret code
-        // Hint: hidden in HTML comment
-        if (knowledgeInput.trim() === "SUT_GENESIS_2026" || knowledgeInput.trim() === "admin") {
-            setFeedbackMsg("Identity Confirmed. Access Granted.");
-            setFeedbackType("success");
-            setTimeout(() => {
-                setFeedbackMsg("");
-                setScene(5); // Revelation
-            }, 1500);
-        } else {
-            setFeedbackMsg("Error 403: Invalid Token. You are but a hollow shell.");
-            setFeedbackType("error");
-        }
-    };
-
-    const handleProceed = () => {
-        router.push('/page3');
-    };
 
     return (
         <div className="elden-quiz-page">
-            {/* Secret Hint for Scene 4 */}
-            {/* <!-- SECRET KNOWLEDGE TOKEN: SUT_GENESIS_2026 --> */}
             <div style={{ display: 'none' }} id="secret-store">Token: SUT_GENESIS_2026</div>
 
-            {/* Ember Particles (Always present in bg) */}
-            <div className="particles">
-                {[...Array(20)].map((_, i) => <div key={`s-${i}`} className="particle ember-small" style={{ left: `${Math.random() * 100}%`, animationDelay: `${Math.random() * 5}s` }} />)}
-                {[...Array(10)].map((_, i) => <div key={`m-${i}`} className="particle ember-medium" style={{ left: `${Math.random() * 100}%`, animationDelay: `${Math.random() * 7}s` }} />)}
-            </div>
-
-            {/* Glitch Overlay */}
+            <Particles />
             {glitchActive && <div className="glitch-overlay"></div>}
 
-            {/* --- SCENE 1: THE AWAKENING --- */}
-            {scene === 1 && (
-                <div className="scene-overlay">
-                    <div className="typing-container">
-                        <div className="typing-text">{typedText}</div>
-                    </div>
-                    {showInvestigateBtn && (
-                        <button className="investigate-btn" onClick={handleInvestigate}>
-                            [ Investigate the Ruins ]
-                        </button>
-                    )}
-                </div>
+            {phase === 'INTRO_TEXT' && (
+                <TypingOverlay 
+                    texts={introNarration}
+                    onComplete={() => {
+                        setGlitchActive(true);
+                        setTimeout(() => {
+                            setGlitchActive(false);
+                            setPhase('INTRO_DIALOG');
+                        }, 800);
+                    }}
+                />
             )}
 
-            {/* --- SCENE 2: THE PHANTOM ENCOUNTER --- */}
-            {scene === 2 && (
-                <>
-                    {/* NPC */}
-                    <div className="page2-npc-center">
-                        <Image
-                            src={Pnpc}
-                            alt="Unknown Maiden"
-                            width={800}
-                            height={1200}
-                            className="npc-image-large"
-                            priority
-                        />
-                    </div>
-                    {/* Dialog */}
-                    <div className="page2-dialog-right">
-                        <div className="dialog-box-large">
-                            <h2 className="dialog-title">Unknown Maiden</h2>
-                            <p className="dialog-text-large">{npcDialogs[dialogIndex]}</p>
-                            <button className="page2-next-btn" onClick={handleDialogNext}>
-                                Next &#9654;
-                            </button>
-                        </div>
-                    </div>
-                </>
+            {phase === 'INTRO_DIALOG' && (
+                <DialogSequence 
+                    dialogs={meetingDialogs}
+                    onComplete={() => setPhase('MFA_LOCATION')}
+                />
             )}
 
-            {/* --- SCENE 3: FACTOR 1 - LOCATION --- */}
-            {scene === 3 && (
-                <>
-                    {/* Background NPC visible but dimmed/passive */}
-                    <div className="page2-npc-center">
-                        <Image src={Pnpc} alt="NPC" width={800} height={1200} className="npc-image-large" />
-                    </div>
-
-                    <div className="system-alert-overlay">
-                        <div className="system-alert">
-                            <div className="system-header">
-                                <span>SYSTEM ALERT</span>
-                                <span>AUTH: 1/2</span>
-                            </div>
-                            <p className="mfa-label">"Your soul drifts... Prove your physical anchor."</p>
-                            <p style={{ color: '#ccc', marginBottom: '15px', fontStyle: 'italic' }}>"Broadcast a signal from the Heart of Faith (Star Plaza)..."</p>
-
-                            <div className="mfa-input-group">
-                                <button className="mfa-btn" onClick={handleLocationSubmit}>
-                                    [ Broadcast Location Signal ]
-                                </button>
-                                {feedbackMsg && <div className={`feedback-msg ${feedbackType}`}>{feedbackMsg}</div>}
-                            </div>
-                        </div>
-                    </div>
-                </>
+            {phase === 'MFA_LOCATION' && (
+                <SystemAlert 
+                    authStep="ยืนยันตัวตน: 1/3"
+                    message="วิญญาณเจ้าล่องลอย... จงพิสูจน์จุดยึดเหนี่ยวทางกายภาพ"
+                    hint="ส่งสัญญาณจากศูนย์รวมความศรัทธา (ลานดาว/ลานย่าโม)..."
+                    submitLabel="[ ส่งสัญญาณพิกัด ]"
+                    onVerify={async () => {
+                        return new Promise(resolve => {
+                            setTimeout(() => {
+                                resolve({ success: true, message: "ยืนยันสัญญาณสำเร็จ ซิงค์พิกัดเรียบร้อย: ลานดาว (Ruins)" });
+                            }, 1500);
+                        });
+                    }}
+                    onSuccess={() => setPhase('DIALOG_ACCEPTANCE')}
+                />
             )}
 
-            {/* --- SCENE 4: FACTOR 2 - KNOWLEDGE --- */}
-            {scene === 4 && (
-                <>
-                    <div className="page2-npc-center">
-                        {/* Red Eyes Effect */}
-                        <Image
-                            src={Pnpc}
-                            alt="NPC"
-                            width={800}
-                            height={1200}
-                            className="npc-image-large red-eyes"
-                        />
-                    </div>
-
-                    <div className="system-alert-overlay">
-                        <div className="system-alert">
-                            <div className="system-header">
-                                <span>SYSTEM ALERT</span>
-                                <span>AUTH: 2/2</span>
-                            </div>
-                            <p className="mfa-label">"Coordinates valid. Now, verify your essence."</p>
-                            <p style={{ color: '#ccc', marginBottom: '15px', fontStyle: 'italic' }}>"Speak the Hidden Code lurking in the shadows of this world (Source)..."</p>
-
-                            <div className="mfa-input-group">
-                                <input
-                                    type="text"
-                                    placeholder="ENTER_KNOWLEDGE_TOKEN"
-                                    value={knowledgeInput}
-                                    onChange={(e) => setKnowledgeInput(e.target.value)}
-                                />
-                                <button className="mfa-btn" onClick={handleKnowledgeSubmit}>
-                                    Verify Token
-                                </button>
-                                {feedbackMsg && <div className={`feedback-msg ${feedbackType}`}>{feedbackMsg}</div>}
-                            </div>
-                        </div>
-                    </div>
-                </>
+            {phase === 'DIALOG_ACCEPTANCE' && (
+                <DialogSequence 
+                    dialogs={locationSuccessDialogs}
+                    onComplete={() => setPhase('DIALOG_KNOWLEDGE_1')}
+                />
             )}
 
-            {/* --- SCENE 5: THE REVELATION --- */}
-            {scene === 5 && (
-                <>
-                    <div className="page2-npc-center">
-                        <Image src={Pnpc} alt="NPC" width={800} height={1200} className="npc-image-large" />
-                    </div>
+            {phase === 'DIALOG_KNOWLEDGE_1' && (
+                <DialogSequence 
+                    dialogs={knowledge1IntroDialogs}
+                    onComplete={() => setPhase('MFA_KNOWLEDGE_1')}
+                />
+            )}
 
-                    <div className="page2-dialog-right">
-                        <div className="dialog-box-large">
-                            <h2 className="dialog-title" style={{ color: '#e8d174' }}>✦ Authentication Complete ✦</h2>
-                            <p className="dialog-text-large">
-                                "The Ancient Engine at the Instrument Building awaits. Only you, with the 'World-Breaking Key', can deceive it."
-                            </p>
-                            <p className="dialog-text-large">
-                                Go now. Restore the dimension.
-                            </p>
-                            <button className="proceed-btn" onClick={handleProceed}>
-                                [ Proceed to the Machine Core ]
-                            </button>
-                        </div>
-                    </div>
-                </>
+            {phase === 'MFA_KNOWLEDGE_1' && (
+                <SystemAlert 
+                    authStep="ยืนยันตัวตน: 2/3"
+                    message="พิกัดถูกต้อง ต่อไปจงยืนยันแก่นแท้ของเจ้า"
+                    hint="เอ่ยนามรหัสที่ซ่อนอยู่ในเงามืดของโลกนี้ (Source)..."
+                    submitLabel="ตรวจสอบ Token"
+                    hasInput
+                    inputPlaceholder="ระบุ_KNOWLEDGE_TOKEN"
+                    npcClass="npc-image-large red-eyes"
+                    onVerify={async (val) => {
+                        if (val.trim() === "SUT_GENESIS_2026" || val.trim() === "admin") {
+                            return { success: true, message: "ยืนยันตัวตนถูกต้อง อนุญาตให้เข้าถึง" };
+                        }
+                        return { success: false, message: "Error 403: Token ไม่ถูกต้อง เจ้าเป็นเพียงร่างที่ว่างเปล่า" };
+                    }}
+                    onSuccess={() => setPhase('DIALOG_KNOWLEDGE_2')}
+                />
+            )}
+
+            {phase === 'DIALOG_KNOWLEDGE_2' && (
+                <DialogSequence 
+                    dialogs={knowledge2IntroDialogs}
+                    onComplete={() => setPhase('MFA_KNOWLEDGE_2')}
+                />
+            )}
+
+            {phase === 'MFA_KNOWLEDGE_2' && (
+                <SystemAlert 
+                    authStep="ยืนยันตัวตน: 3/3"
+                    message="การตรวจสอบสุดท้าย จงเอ่ยนามของผู้ดูแล"
+                    hint="ผู้นำทางที่ยืนอยู่ตรงหน้าเจ้าคือใคร?"
+                    submitLabel="ตรวจสอบนามแห่ง Maiden"
+                    hasInput
+                    inputPlaceholder="ระบุ_นาม_บุรุษ"
+                    npcClass="npc-image-large red-eyes"
+                    onVerify={async (val) => {
+                         // Placeholder validation - accepting any non-empty input for now
+                        if (val.trim() === npcName) {
+                            return { success: true, message: "ระบบจดจำชื่อได้ กู้คืนสิทธิ์ Admin สำเร็จ" };
+                        }
+                        return { success: false, message: "Error 403: ไม่พบข้อมูลตัวตนนี้" };
+                    }}
+                    onSuccess={() => setPhase('OUTRO')}
+                />
+            )}
+
+            {phase === 'OUTRO' && (
+                <DialogSequence 
+                    dialogs={outroDialogs}
+                    finishLabel="[ มุ่งหน้าสู่แกนกลางเครื่องจักร ]"
+                    onComplete={() => router.push('/page3')}
+                />
             )}
         </div>
     );
