@@ -1,0 +1,6 @@
+
+Reverse Operation: นำข้อความ }neewteBsdnaLehTnOrekcaHfOdroLehTmAI{GALF มาเรียงลำดับใหม่จากขวาไปซ้าย
+
+เมื่อกลับด้านแล้วจะได้ข้อความที่อ่านรู้เรื่องทันที
+
+หรือจะใช้เว็บไซต์ https://gchq.github.io/CyberChef/  เลือกเมนู reverse แล้ววางข้อความลงไป

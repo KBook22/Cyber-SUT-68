@@ -1,0 +1,20 @@
+นำชุดตัวเลขจาก Hint มาแปลงเป็นตัวอักษร (ASCII to Text)
+    67 72 69 69 82 76 69 65 68 69 82  = "CHEERLEADER"
+    32 = " " (Space)
+    79 78 69 84 87 79 79 78 69 84 87 79 84 72 82 69 \n69 79 78 69 84 87 79 79 78 69 84 87 79 79 78 69
+        =  "ONE TWO ONE TWO THREE ONE TWO ONE TWO ONE"
+
+เมื่อปลดล็อกได้ จะได้รับ cipher.bin และ Private Key
+
+นำไฟล์ cipher.bin และ Private Key ไปเข้ากระบวนการถอดรหัส (ผ่านเว็บไซต์ https://gchq.github.io/CyberChef/ )
+
+    Input: cipher.bin + Private Key
+	Output: ได้ข้อมูลที่เป็น String (ยังอ่านไม่ออกว่าเป็น Flag ทันที เพราะเป็น Base64)
+	Result(Baase64): VU5BTUV7RHlOYU1pVEUwMDd9	
+
+    นำผลลัพธ์ที่ได้จากข้อ 1 มาถอดรหัส Base64 (ผ่านเว็บไซต์ https://www.base64decode.org/ )
+	Input: VU5BTUV7RHlOYU1pVEUwMDd9
+	Output: UNAME{DyNaMiTE007}
+
+Answer = UNAME{DyNaMiTE007}
+

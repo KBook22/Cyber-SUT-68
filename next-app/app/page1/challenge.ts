@@ -205,18 +205,18 @@ p และ q เป็นจำนวนเฉพาะที่เล็กพ
       {
         title: "Hologram Message",
         content:
-          "ข้อความที่ลอยออกมา:\n}niraP.TsInioctiBfOretropmIdnAraiLaeRehT{GALF",
+          "จงจำเอาไว้:\n}neewteBsdnaLehTnOrekcaHfOdroLehTmAI{GALF",
       },
     ],
-    flag: "FLAG{TheRealLiarAndImporterOfBitcoinIsT.Parin}",
+    flag: "FLAG{IAmTheLordOfHackerOnTheLandsBetween}",
     backgroundImage: Orb2.src,
     npcDialogue: [
       "เย้! เข้ามาได้แล้ววว",
       "เอ๊ะ! ไอ้ลูกกลมๆ สีม่วงตรงมุมห้องนั่นมันอะไรน่ะ?",
       "ดูมีวงแหวนหมุนได้เหมือนของเล่นเลยแฮะ... สวยจัง",
       'ไหนขอลอง "บิด" เล่นดูหน่อยซิ... กริ๊ก!',
-      "เฮ้ย! มีข้อความโฮโลแกรมเด้งออกมาแฮะ แต่ทำไมมันอ่านไม่รู้เรื่องเลย",
-      "niraP... GALF? ...",
+      "จงจำสิ่งนี้ไว้ให้ดี",
+      "มันจะเป็นประโยชน์ต่อตัวเจ้าในอนาคต..",
     ],
   },
 ];
