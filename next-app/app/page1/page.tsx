@@ -14,11 +14,11 @@ import { Challenge, challenges } from './challenge'
 import SplashScreen from '../components/SplashScreen'; // Import SplashScreen
 
 const crashDialogs = [
-  "FATAL ERROR: Decryption Successful...",
-  "Warning: The Forbidden Knowledge has been accessed.",
-  "Integrity breach detected... Reality buffer overflow...",
-  "NO! You fool! You've broken the seal!",
-  "System Critical... Segmentation Fault... Dimensions Shattered."
+  "FATAL ERROR: การถอดรหัสเสร็จสมบูรณ์...",
+  "Warning: องค์ความรู้ต้องห้าม (Forbidden Knowledge) ถูกเข้าถึงแล้ว",
+  "ตรวจพบการละเมิด Integrity... เกิด Buffer Overflow กับความเป็นจริง...",
+  "ไม่นะ! เจ้าโง่! เจ้าทำลายผนึกนั่นลงไปแล้ว!",
+  "ระบบวิกฤต... Segmentation Fault... มิติแตกสลาย (Dimensions Shattered)",
 ];
 
 export default function Page1() {
