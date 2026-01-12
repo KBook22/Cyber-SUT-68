@@ -35,10 +35,15 @@ const locationSuccessDialogs = [
   "บุรุษปริศนา: 'อภัยให้ข้าด้วย เจ้าไม่ใช่ Glitch สินะ เจ้าคือผู้รอดชีวิต'",
 ];
 
-const knowledge1IntroDialogs = [
+const havIntroDialogs = [
   "บุรุษปริศนา: 'แต่การมีตัวตนในโลกกายภาพนั้นยังไม่เพียงพอ'",
-  "บุรุษปริศนา: 'เพื่อเข้าถึง Layer ที่ลึกกว่านี้ เจ้าต้องพิสูจน์ว่าเจ้ารู้จักต้นกำเนิด (Source)'",
-  "บุรุษปริศนา: 'เจ้ามีตราประทับแห่งจุดเริ่มต้นหรือไม่? สตริงที่ซ่อนเร้นถักทอโลกใบนี้อยู่ (Hidden String)?'",
+  "บุรุษปริศนา: 'เจ้ามีตราชั่งแห่งความรู้หรือไม่? ข้าสัมผัสไม่ได้ถึงมันเลย'",
+];
+
+const knowledge1IntroDialogs = [
+  "บุรุษปริศนา: 'ยอดเยี่ยม...'",
+  "บุรุษปริศนา: 'แต่เพื่อเข้าถึง Layer ที่ลึกกว่านี้ เจ้าต้องพิสูจน์ว่าเจ้ารู้จักต้นกำเนิด'",
+  "บุรุษปริศนา: 'เจ้ามีตราประทับแห่งจุดเริ่มต้นหรือไม่? สตริงที่ซ่อนเร้นถักทอโลกใบนี้อยู่?'",
 ];
 
 const knowledge2IntroDialogs = [
@@ -70,6 +75,8 @@ export default function Page2() {
     | "INTRO_DIALOG"
     | "MFA_LOCATION"
     | "DIALOG_ACCEPTANCE"
+    | "DIALOG_HAVE"
+    | "MFA_HAVE"
     | "DIALOG_KNOWLEDGE_1"
     | "MFA_KNOWLEDGE_1"
     | "DIALOG_KNOWLEDGE_2"
@@ -127,7 +134,7 @@ export default function Page2() {
 
       {phase === "MFA_LOCATION" && (
         <SystemAlert
-          authStep="ยืนยันตัวตน: 1/3"
+          authStep="ยืนยันตัวตน: 1/4"
           message="วิญญาณเจ้าล่องลอย... จงพิสูจน์จุดยึดเหนี่ยวทางกายภาพ"
           hint="ส่งสัญญาณจากศูนย์รวมความศรัทธา (ลานดาว/ลานย่าโม)..."
           submitLabel="[ ส่งสัญญาณพิกัด ]"
@@ -176,7 +183,42 @@ export default function Page2() {
       {phase === "DIALOG_ACCEPTANCE" && (
         <DialogSequence
           dialogs={locationSuccessDialogs}
-          onComplete={() => setPhase("DIALOG_KNOWLEDGE_1")}
+          onComplete={() => setPhase("DIALOG_HAVE")}
+        />
+      )}
+
+      {phase === "DIALOG_HAVE" && (
+        <DialogSequence
+          dialogs={havIntroDialogs}
+          onComplete={() => setPhase("MFA_HAVE")}
+        />
+      )}
+
+      {phase === "MFA_HAVE" && (
+        <SystemAlert
+          authStep="ยืนยันตัวตน 2/4"
+          message="พิกัดถูกต้อง แล้วไหนตราชั่งแห่งความรู้ของเจ้า"
+          hint="[Hint: สร้าง Cookie ชื่อ 'SUT_STUDENT_ID' โดยให้ค่าเป็น '...']"
+          submitLabel="[ ตรวจสอบตราชั่ง ]"
+          onVerify={async () => {
+            const cookies = document.cookie.split(";").reduce((acc, cookie) => {
+              const [name, value] = cookie.trim().split("=");
+              acc[name] = value;
+              return acc;
+            }, {} as Record<string, string>);
+
+            if (/^B66\d{5}$/.test(cookies["SUT_STUDENT_ID"])) {
+              return {
+                success: true,
+                message: "ตรวจพบ Token: สิทธิ์การเข้าถึงถูกต้อง",
+              };
+            }
+            return {
+              success: false,
+              message: "Error 403: ไม่พบ Cookie ที่ชื่อ 'SUT_STUDENT_ID'",
+            };
+          }}
+          onSuccess={() => setPhase("DIALOG_KNOWLEDGE_1")}
         />
       )}
 
@@ -189,10 +231,10 @@ export default function Page2() {
 
       {phase === "MFA_KNOWLEDGE_1" && (
         <SystemAlert
-          authStep="ยืนยันตัวตน: 2/3"
-          message="พิกัดถูกต้อง ต่อไปจงยืนยันแก่นแท้ของเจ้า"
+          authStep="ยืนยันตัวตน: 3/4"
+          message="ตราชั่งถูกต้อง ต่อไปจงยืนยันแก่นแท้ของเจ้า"
           hint="เอ่ยนามรหัสที่ซ่อนอยู่ในเงามืดของโลกนี้ (Source)..."
-          submitLabel="ตรวจสอบ Token"
+          submitLabel="ตรวจสอบตราประทับ"
           hasInput
           inputPlaceholder="ระบุ_KNOWLEDGE_TOKEN"
           npcClass="npc-image-large red-eyes"
@@ -222,7 +264,7 @@ export default function Page2() {
 
       {phase === "MFA_KNOWLEDGE_2" && (
         <SystemAlert
-          authStep="ยืนยันตัวตน: 3/3"
+          authStep="ยืนยันตัวตน: 4/4"
           message="การตรวจสอบสุดท้าย จงเอ่ยนามของผู้ดูแล"
           hint="ผู้นำทางที่ยืนอยู่ตรงหน้าเจ้าคือใคร?"
           submitLabel="ตรวจสอบนามแห่ง Maiden"
