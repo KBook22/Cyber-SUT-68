@@ -20,4 +20,3 @@ with open("flag.png", "wb") as f:
 
 print("✓ Decryption successful!")
 print("✓ flag.png has been extracted")
-print("Then Try exiftool on flag.png to get the flag")
