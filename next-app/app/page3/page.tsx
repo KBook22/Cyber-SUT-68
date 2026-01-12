@@ -1,9 +1,12 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import SplashScreen from '../components/SplashScreen'; // Import SplashScreen
 
 export default function Page3() {
     const router = useRouter();
+    const [showSplash, setShowSplash] = useState(true);
 
     const handleNext = () => {
         router.push('/page1');
@@ -18,6 +21,14 @@ export default function Page3() {
             minHeight: '100vh',
             gap: '24px'
         }}>
+           {showSplash && (
+                <SplashScreen 
+                  chapter="CHAPTER 3"
+                  title="The Engine of Restoration"
+                  subtitle="Authorization System Recovery"
+                  onComplete={() => setShowSplash(false)}
+                />
+            )}
             <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Page 3</h1>
 
             <button
