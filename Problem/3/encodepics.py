@@ -10,11 +10,11 @@ print("Key (SHA-256):", key.hex())
 
 
 iv = os.urandom(16)
-with open("flag.png", "rb") as f:
+with open(r"c:\Users\IHCK\Desktop\Cyber-SUT-68\Problem\3\flag.png", "rb") as f:
     plaintext = f.read()
 
 cipher = AES.new(key, AES.MODE_CBC, iv)
 ciphertext = cipher.encrypt(pad(plaintext, 16))
 
-with open("flag.png.enc", "wb") as f:
+with open(r"c:\Users\IHCK\Desktop\Cyber-SUT-68\Problem\3\flag.png.enc", "wb") as f:
     f.write(iv + ciphertext)
