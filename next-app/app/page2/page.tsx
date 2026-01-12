@@ -10,12 +10,16 @@ import DialogSequence from './components/DialogSequence';
 import SystemAlert from './components/SystemAlert';
 import Particles from './components/Particles';
 
-const introDialogs = [
+const introNarration = [
   // Scene 3: Waking up in the Ruins (SUT Context)
   "...",
   "You open your eyes amidst the ruins. The sky is a bruised violet.\nThis is SUT... but not the SUT you know.",
+  "The air hums with the sound of a thousand disconnected sessions.",
+  "You see fragments of code floating in the air, unfinished assignments and lost data.",
   "Floating debris of the 'Technopolis' surrounds you.\nAhead, a flickering figure stands guarding the path.",
-  
+];
+
+const meetingDialogs = [
   // Scene 4: Meeting the Maiden (The NPC)
   "Unknown Maiden: 'Halt, Tarnished Student... or are you merely a glitch in the code?'",
   "Unknown Maiden: 'The realm is broken. Phantoms and corrupted packets roam these lands.'",
@@ -23,27 +27,38 @@ const introDialogs = [
   "Unknown Maiden: 'Show me your coordinates. Anchor your soul to this reality.'"
 ];
 
-const postSuccessDialogs = [
-  // Scene 1: Acceptance
-  "Maiden: 'The coordinates match... You stand on solid ground.'",
-  "Maiden: 'Forgive me. You are no glitch. You are a survivor.'",
-  
-  // Scene 2: The Path Forward (Hinting Part 3)
+const locationSuccessDialogs = [
+  "Unknown Maiden: 'The coordinates match... You stand on solid ground.'",
+  "Unknown Maiden: 'Forgive me. You are no glitch. You are a survivor.'"
+];
+
+const knowledge1IntroDialogs = [
+  "Unknown Maiden: 'But existence in the physical realm is not enough.'",
+  "Unknown Maiden: 'To access the deeper layers, you must prove you know the source.'",
+  "Unknown Maiden: 'Do you carry the mark of the Beginning? The hidden string that weaves this world?'"
+];
+
+const knowledge2IntroDialogs = [
+  "Unknown Maiden: 'Impressive. You see beyond the veil.'",
+  "Unknown Maiden: 'But one final lock remains before I can trust you completely.'",
+  "Unknown Maiden: 'My name... lost to the compiled memory dumps. Do you know who I am?'"
+];
+
+const outroDialogs = [
+  "Maiden: 'Yes... you know me.'",
   "Maiden: 'Listen closely. The shattering can be reversed.'",
   "Maiden: 'Deep within the Instrument Building (F1), the Great Engine awaits restoration.'",
   
-  // Scene 3: THE KEY HINT (Vital for Part 3)
   "Maiden: 'But the Engine requires an Administrator's touch... an 'Elden Lord's' authority.'",
   "Maiden: 'You possess the key, do you not? The same secret code that broke this world...'",
   "Maiden: 'Use that forbidden secret to forge your new identity. Only the cause of the destruction can bring about the cure.'",
   
-  // Scene 4: Departure
   "Maiden: 'Go now. Become the Admin this system needs.'"
 ];
 
 export default function Page2() {
     const router = useRouter();
-    const [phase, setPhase] = useState<'INTRO_TEXT' | 'INTRO_DIALOG' | 'MFA_LOCATION' | 'MFA_KNOWLEDGE' | 'OUTRO'>('INTRO_TEXT');
+    const [phase, setPhase] = useState<'INTRO_TEXT' | 'INTRO_DIALOG' | 'MFA_LOCATION' | 'DIALOG_ACCEPTANCE' | 'DIALOG_KNOWLEDGE_1' | 'MFA_KNOWLEDGE_1' | 'DIALOG_KNOWLEDGE_2' | 'MFA_KNOWLEDGE_2' | 'OUTRO'>('INTRO_TEXT');
     const [glitchActive, setGlitchActive] = useState(false);
 
     return (
@@ -55,7 +70,7 @@ export default function Page2() {
 
             {phase === 'INTRO_TEXT' && (
                 <TypingOverlay 
-                    texts={introDialogs.slice(0, 3)}
+                    texts={introNarration}
                     onComplete={() => {
                         setGlitchActive(true);
                         setTimeout(() => {
@@ -68,14 +83,14 @@ export default function Page2() {
 
             {phase === 'INTRO_DIALOG' && (
                 <DialogSequence 
-                    dialogs={introDialogs.slice(3)}
+                    dialogs={meetingDialogs}
                     onComplete={() => setPhase('MFA_LOCATION')}
                 />
             )}
 
             {phase === 'MFA_LOCATION' && (
                 <SystemAlert 
-                    authStep="AUTH: 1/2"
+                    authStep="AUTH: 1/3"
                     message="Your soul drifts... Prove your physical anchor."
                     hint="Broadcast a signal from the Heart of Faith (Star Plaza)..."
                     submitLabel="[ Broadcast Location Signal ]"
@@ -86,13 +101,27 @@ export default function Page2() {
                             }, 1500);
                         });
                     }}
-                    onSuccess={() => setPhase('MFA_KNOWLEDGE')}
+                    onSuccess={() => setPhase('DIALOG_ACCEPTANCE')}
                 />
             )}
 
-            {phase === 'MFA_KNOWLEDGE' && (
+            {phase === 'DIALOG_ACCEPTANCE' && (
+                <DialogSequence 
+                    dialogs={locationSuccessDialogs}
+                    onComplete={() => setPhase('DIALOG_KNOWLEDGE_1')}
+                />
+            )}
+
+            {phase === 'DIALOG_KNOWLEDGE_1' && (
+                <DialogSequence 
+                    dialogs={knowledge1IntroDialogs}
+                    onComplete={() => setPhase('MFA_KNOWLEDGE_1')}
+                />
+            )}
+
+            {phase === 'MFA_KNOWLEDGE_1' && (
                 <SystemAlert 
-                    authStep="AUTH: 2/2"
+                    authStep="AUTH: 2/3"
                     message="Coordinates valid. Now, verify your essence."
                     hint="Speak the Hidden Code lurking in the shadows of this world (Source)..."
                     submitLabel="Verify Token"
@@ -105,13 +134,40 @@ export default function Page2() {
                         }
                         return { success: false, message: "Error 403: Invalid Token. You are but a hollow shell." };
                     }}
+                    onSuccess={() => setPhase('DIALOG_KNOWLEDGE_2')}
+                />
+            )}
+
+            {phase === 'DIALOG_KNOWLEDGE_2' && (
+                <DialogSequence 
+                    dialogs={knowledge2IntroDialogs}
+                    onComplete={() => setPhase('MFA_KNOWLEDGE_2')}
+                />
+            )}
+
+            {phase === 'MFA_KNOWLEDGE_2' && (
+                <SystemAlert 
+                    authStep="AUTH: 3/3"
+                    message="One final verification. Name the administrator."
+                    hint="Who is the guide standing before you?"
+                    submitLabel="Verify Maiden Name"
+                    hasInput
+                    inputPlaceholder="ENTER_MAIDEN_NAME"
+                    npcClass="npc-image-large red-eyes"
+                    onVerify={async (val) => {
+                         // Placeholder validation - accepting any non-empty input for now
+                        if (val.trim().length > 0) {
+                            return { success: true, message: "Name Recognized. Admin Privileges Restored." };
+                        }
+                        return { success: false, message: "Error 403: Unknown Entity." };
+                    }}
                     onSuccess={() => setPhase('OUTRO')}
                 />
             )}
 
             {phase === 'OUTRO' && (
                 <DialogSequence 
-                    dialogs={postSuccessDialogs}
+                    dialogs={outroDialogs}
                     finishLabel="[ Proceed to the Machine Core ]"
                     onComplete={() => router.push('/page3')}
                 />
