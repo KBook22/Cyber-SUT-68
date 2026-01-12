@@ -59,6 +59,10 @@ const outroDialogs = [
   `${npcName}: 'ไปเถิด จงกลายเป็น Admin ที่ระบบนี้ต้องการ`,
 ];
 
+const TARGET_LAT = 14.88;
+const TARGET_LON = 102.1;
+const RADIUS_ALLOWED = 1;
+
 export default function Page2() {
   const router = useRouter();
   const [phase, setPhase] = useState<
@@ -74,6 +78,13 @@ export default function Page2() {
   >("INTRO_TEXT");
   const [glitchActive, setGlitchActive] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
+
+  const checkLocation = (lat: number, lon: number) => {
+    const dist = Math.sqrt(
+      Math.pow(lat - TARGET_LAT, 2) + Math.pow(lon - TARGET_LON, 2)
+    );
+    return dist < RADIUS_ALLOWED;
+  };
 
   if (showSplash)
     return (
@@ -122,13 +133,40 @@ export default function Page2() {
           submitLabel="[ ส่งสัญญาณพิกัด ]"
           onVerify={async () => {
             return new Promise((resolve) => {
-              setTimeout(() => {
+              if (!navigator.geolocation) {
                 resolve({
-                  success: true,
-                  message:
-                    "ยืนยันสัญญาณสำเร็จ ซิงค์พิกัดเรียบร้อย: ลานดาว (Ruins)",
+                  success: false,
+                  message: "Error: Geolocation API not supported.",
                 });
-              }, 1500);
+                return;
+              }
+              navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                  if (
+                    checkLocation(pos.coords.latitude, pos.coords.longitude)
+                  ) {
+                    resolve({
+                      success: true,
+                      message: "พิกัดถูกต้อง: ตรวจพบวิญญาณ ณ ลานย่าโม",
+                    });
+                  } else {
+                    resolve({
+                      success: false,
+                      message: `Error: เจ้าอยู่ที่ (${pos.coords.latitude.toFixed(
+                        4
+                      )}, ${pos.coords.longitude.toFixed(
+                        4
+                      )}) ซึ่งไม่ใช่จุดที่กำหนด`,
+                    });
+                  }
+                },
+                () =>
+                  resolve({
+                    success: false,
+                    message:
+                      "Error: ไม่สามารถเข้าถึง GPS (กรุณา Allow Location)",
+                  })
+              );
             });
           }}
           onSuccess={() => setPhase("DIALOG_ACCEPTANCE")}
