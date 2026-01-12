@@ -10,6 +10,7 @@ import DialogSequence from "./components/DialogSequence";
 import SystemAlert from "./components/SystemAlert";
 import Particles from "./components/Particles";
 import SplashScreen from "../components/SplashScreen"; // Import SplashScreen
+import { allowlist } from "./allowlist";
 
 const npcName = "ผู้พิทักษ์บิตนิรันดร์";
 
@@ -207,15 +208,23 @@ export default function Page2() {
               return acc;
             }, {} as Record<string, string>);
 
-            if (/^B66\d{5}$/.test(cookies["SUT_STUDENT_ID"])) {
+            const sid = cookies["SUT_STUDENT_ID"]?.trim() || "";
+
+            if (sid === "")
+              return {
+                success: false,
+                message: "Error 403: ไม่พบ Cookie ที่ชื่อ 'SUT_STUDENT_ID'",
+              };
+
+            if (allowlist.has(sid))
               return {
                 success: true,
                 message: "ตรวจพบ Token: สิทธิ์การเข้าถึงถูกต้อง",
               };
-            }
+
             return {
               success: false,
-              message: "Error 403: ไม่พบ Cookie ที่ชื่อ 'SUT_STUDENT_ID'",
+              message: "Error 403: ข้าไม่รู้จักเจ้า",
             };
           }}
           onSuccess={() => setPhase("DIALOG_KNOWLEDGE_1")}
