@@ -11,15 +11,6 @@ import SystemAlert from './components/SystemAlert';
 import Particles from './components/Particles';
 
 const introDialogs = [
-  // Scene 1: The Crash (System Error mixed with Fantasy)
-  "FATAL ERROR: Decryption Successful...",
-  "Warning: The Forbidden Knowledge has been accessed.",
-  "Integrity breach detected... Reality buffer overflow...",
-  "NO! You fool! You've broken the seal!",
-  
-  // Scene 2: The Shattering
-  "System Critical... Segmentation Fault... Dimensions Shattered.",
-  
   // Scene 3: Waking up in the Ruins (SUT Context)
   "...",
   "You open your eyes amidst the ruins. The sky is a bruised violet.\nThis is SUT... but not the SUT you know.",
@@ -64,7 +55,7 @@ export default function Page2() {
 
             {phase === 'INTRO_TEXT' && (
                 <TypingOverlay 
-                    texts={introDialogs.slice(0, 8)}
+                    texts={introDialogs.slice(0, 3)}
                     onComplete={() => {
                         setGlitchActive(true);
                         setTimeout(() => {
@@ -77,7 +68,7 @@ export default function Page2() {
 
             {phase === 'INTRO_DIALOG' && (
                 <DialogSequence 
-                    dialogs={introDialogs.slice(8)}
+                    dialogs={introDialogs.slice(3)}
                     onComplete={() => setPhase('MFA_LOCATION')}
                 />
             )}
