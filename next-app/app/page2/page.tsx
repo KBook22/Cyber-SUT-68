@@ -12,7 +12,7 @@ import Particles from "./components/Particles";
 import SplashScreen from "../components/SplashScreen"; // Import SplashScreen
 import { allowlist } from "./allowlist";
 
-const npcName = "ผู้พิทักษ์บิตนิรันดร์";
+const npcName = "บุรุษปริศนา";
 
 const introNarration = [
   // Scene 3: Waking up in the Ruins (SUT Context)
@@ -281,8 +281,7 @@ export default function Page2() {
           inputPlaceholder="ระบุ_นาม_บุรุษ"
           npcClass="npc-image-large red-eyes"
           onVerify={async (val) => {
-            // Placeholder validation - accepting any non-empty input for now
-            if (val.trim() === npcName) {
+            if (val.trim().toLowerCase() === "parin sornlertlamvanich") {
               return {
                 success: true,
                 message: "ระบบจดจำชื่อได้ กู้คืนสิทธิ์ Admin สำเร็จ",
