@@ -121,7 +121,7 @@ FLAG อยู่ในภาพ`,
   {
     id: 4,
     title: "ด่านที่ 4: ยืนยันตัวตนหน้าประตู",
-    description: "RSA + Base64",
+    description: "RSA Asymmetric + Base64 ..(https://gchq.github.io/CyberChef/)",
     hints: [
       {
         title: "คำแนะนำ",
@@ -196,7 +196,7 @@ p และ q เป็นจำนวนเฉพาะที่เล็กพ
     id: 6,
     title: "ด่านสุดท้าย: ของเล่นต้องห้าม?",
     description:
-      'ด้วยความซนและมือบอล คุณเจอวัตถุหน้าตาเหมือนรูบิคผสมลูกแก้ว เลยลอง "หมุนย้อนกลับ" ดูเล่นๆ...',
+      'ด้วยความซนและมือบอล คุณเจอวัตถุหน้าตาเหมือนรูบิคผสมลูกแก้ว\nเลยลอง "หมุนย้อนกลับ" ดูเล่นๆ...',
     hints: [
       {
         title: "Action",
@@ -205,7 +205,7 @@ p และ q เป็นจำนวนเฉพาะที่เล็กพ
       {
         title: "Hologram Message",
         content:
-          "จงจำเอาไว้:\n}neewteBsdnaLehTnOrekcaHfOdroLehTmAI{GALF",
+          "Secret Key:\n}neewteBsdnaLehTnOrekcaHfOdroLehTmAI{GALF",
       },
     ],
     flag: "FLAG{IAmTheLordOfHackerOnTheLandsBetween}",
