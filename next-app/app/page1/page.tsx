@@ -23,7 +23,7 @@ const crashDialogs = [
 
 export default function Page1() {
   const router = useRouter();
-  const [currentChallengeIndex, setCurrentChallengeIndex] = useState(0);
+  const [currentChallengeIndex, setCurrentChallengeIndex] = useState(3);
   const [expandedHints, setExpandedHints] = useState<{ [key: number]: boolean }>({});
   const [flagInput, setFlagInput] = useState('');
   const [submission, setSubmission] = useState<'success' | 'error' | null>(null);
