@@ -2,45 +2,108 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import SplashScreen from "../components/SplashScreen";
 
-import SplashScreen from "../components/SplashScreen"; // Import SplashScreen
+const SECRET_KEY = "IAmTheLordOfHackerOnTheLandsBetween";
 
-const SECRET_KEY = "eldenringisconceptofteam";
-
-const createJWT = (role: string): string => {
-  const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" }));
-  const payload = btoa(JSON.stringify({ role, iat: Date.now() }));
-  const signature = btoa(SECRET_KEY);
-  return `${header}.${payload}.${signature}`;
+// Helper: แปลง ArrayBuffer เป็น Base64URL string
+const arrayBufferToBase64Url = (buffer: ArrayBuffer): string => {
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary)
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
 };
 
+// Helper: แปลง String เป็น Base64URL
+const stringToBase64Url = (str: string): string => {
+  return btoa(str)
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+};
+
+// Function: สร้าง JWT ที่ถูกต้อง (ใช้ Web Crypto API)
+const createJWT = async (role: string): Promise<string> => {
+  const header = JSON.stringify({ alg: "HS256", typ: "JWT" });
+  const payload = JSON.stringify({ role, iat: Date.now() });
+
+  const encodedHeader = stringToBase64Url(header);
+  const encodedPayload = stringToBase64Url(payload);
+  const dataToSign = `${encodedHeader}.${encodedPayload}`;
+
+  const encoder = new TextEncoder();
+  
+  // Import Secret Key สำหรับใช้ใน Algorithm HMAC
+  const key = await window.crypto.subtle.importKey(
+    "raw",
+    encoder.encode(SECRET_KEY),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+
+  // ทำการ Sign ข้อมูล
+  const signatureBuffer = await window.crypto.subtle.sign(
+    "HMAC",
+    key,
+    encoder.encode(dataToSign)
+  );
+
+  const encodedSignature = arrayBufferToBase64Url(signatureBuffer);
+
+  return `${dataToSign}.${encodedSignature}`;
+};
+
+// Function: Decode JWT (ปรับให้รองรับ Base64URL)
 const decodeJWT = (token: string): { role: string } | null => {
   try {
     const parts = token.split(".");
     if (parts.length !== 3) return null;
-    const payload = JSON.parse(atob(parts[1]));
+
+    // แปลง Base64URL กลับเป็น Base64 ปกติเพื่อให้ atob ทำงานได้
+    let base64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const pad = base64.length % 4;
+    if (pad) {
+      base64 += new Array(5 - pad).join("=");
+    }
+
+    const payload = JSON.parse(atob(base64));
     return payload;
-  } catch {
+  } catch (e) {
+    console.error("Failed to decode JWT", e);
     return null;
   }
 };
 
-const initializeToken = () => {
+// Function: Initialize Token (ต้องเป็น Async เพราะ createJWT เป็น Async)
+const initializeToken = async () => {
   if (typeof window === "undefined") return;
 
   const existingToken = sessionStorage.getItem("roleToken");
-  if (!existingToken) {
-    const defaultToken = createJWT("tarnished");
+  
+  // ตรวจสอบเบื้องต้นว่า Token มีอยู่ไหม (และโครงสร้างถูกต้องไหม)
+  let isValid = false;
+  if (existingToken) {
+     const decoded = decodeJWT(existingToken);
+     if (decoded) isValid = true;
+  }
+
+  if (!isValid) {
+    // ถ้าไม่มี Token หรือ Token เสีย ให้สร้างใหม่เป็น role "tarnished"
+    const defaultToken = await createJWT("tarnished");
     sessionStorage.setItem("roleToken", defaultToken);
   }
 };
 
 const checkRole = (): string | null => {
   if (typeof window === "undefined") return null;
-
   const token = sessionStorage.getItem("roleToken");
   if (!token) return null;
-
   const decoded = decodeJWT(token);
   return decoded?.role || null;
 };
@@ -51,30 +114,21 @@ export default function Page3() {
   const [isOpening, setIsOpening] = useState(false);
   const [showFlash, setShowFlash] = useState(false);
 
+  // ... (ส่วน handleDoorClick เหมือนเดิม) ...
   const handleDoorClick = () => {
     const role = checkRole();
-
-    if (role === "tarnished") {
-      alert("โอ้ไม่มีสิทธิ์นั้น โอ้ไม่มีสิทธิ์");
-      return;
-    }
-
     if (role === "admin") {
       setIsOpening(true);
-
-      // Start flash after door opens
-      setTimeout(() => {
-        setShowFlash(true);
-      }, 800);
-
-      // Navigate to admin page
-      setTimeout(() => {
-        router.push("/admin");
-      }, 1500);
+      setTimeout(() => setShowFlash(true), 800);
+      setTimeout(() => router.push("/admin"), 1500);
+    } else {
+      alert("โอ้ไม่มีสิทธิ์นั้น โอ้ไม่มีสิทธิ์");
+      return;
     }
   };
 
   useEffect(() => {
+    // เรียกใช้ initializeToken แบบ fire-and-forget ภายใน useEffect
     initializeToken();
   }, []);
 
