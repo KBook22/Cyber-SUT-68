@@ -95,6 +95,7 @@ export default function Page2() {
   >("INTRO_TEXT");
   const [glitchActive, setGlitchActive] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
+  const [npcFirstAppear, setNpcFirstAppear] = useState(true);
 
   const checkLocation = (lat: number, lon: number) => {
     const dist = Math.sqrt(
@@ -148,6 +149,7 @@ export default function Page2() {
           message="วิญญาณเจ้าล่องลอย... จงพิสูจน์จุดยึดเหนี่ยวทางกายภาพ"
           hint="ส่งสัญญาณจากศูนย์รวมความศรัทธา (ลานดาว/ลานย่าโม)..."
           submitLabel="[ ส่งสัญญาณพิกัด ]"
+          isFirstAppear={npcFirstAppear}
           onVerify={async () => {
             return new Promise((resolve) => {
               if (!navigator.geolocation) {
@@ -186,7 +188,10 @@ export default function Page2() {
               );
             });
           }}
-          onSuccess={() => setPhase("DIALOG_ACCEPTANCE")}
+          onSuccess={() => {
+            setNpcFirstAppear(false);
+            setPhase("DIALOG_ACCEPTANCE");
+          }}
         />
       )}
 
@@ -210,6 +215,7 @@ export default function Page2() {
           message="จงพิสูจน์ว่าเจ้าสามารถเข้าถึง Memory Fragment ที่กระจัดกระจายอยู่"
           hint="[Hint: สร้าง Cookie ชื่อ 'SUT_STUDENT_ID' โดยให้ค่าเป็นรหัสนักศึกษา]"
           submitLabel="[ เข้าถึง Memory Fragment ]"
+          isFirstAppear={false}
           onVerify={async () => {
             const cookies = document.cookie.split(";").reduce((acc, cookie) => {
               const [name, value] = cookie.trim().split("=");
@@ -256,6 +262,7 @@ export default function Page2() {
           hasInput
           inputPlaceholder="ระบุจำนวนวิญญาณ"
           npcClass="npc-image-large"
+          isFirstAppear={false}
           onVerify={async (val) => {
             if (val.trim() === "74") {
               return {
