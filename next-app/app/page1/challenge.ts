@@ -102,7 +102,7 @@ FLAG อยู่ในภาพ`,
       },
     ],
     downloadFile: "/challenges/flag.png.enc",
-    flag: "FLAG{ThisIsThePlaceYouNeedToGoHurryUp67}",
+    flag: "FLAG{CongratThisIsThePlaceYouNeedToGo67}",
     backgroundImage: Number4.src,
     npcDialogue: [
       "เยี่ยม! ได้ขึ้นรถสักที แอร์เย็นฉ่ำเลย~",
@@ -159,7 +159,7 @@ tsLBoD17446C+W89gAip89MZlAJdPEXhBqKCThLuZJiw
     id: 5,
     title: "ด่านที่ 5: ทำลาย RSA",
     description:
-      "ทำลายการเข้ารหัส RSA นี้! modulus มีขนาดเล็กพอที่จะแยกตัวประกอบได้\nตอบในรูปแบบ: PASS{}",
+      "ทำลายการเข้ารหัส RSA นี้! modulus มีขนาดเล็กพอที่จะแยกตัวประกอบได้",
     hints: [
       {
         title: "พารามิเตอร์ RSA",
@@ -177,7 +177,7 @@ p และ q เป็นจำนวนเฉพาะที่เล็กพ
 แปลงตัวเลขที่ได้เป็น ASCII characters`,
       },
     ],
-    flag: "PASS{W0rkH4rd2}",
+    flag: "FLAG{W0rkH4rd2}",
     backgroundImage: Number6.src,
     npcDialogue: [
       "เอ๊ะ ยังต้องกรอก Password อีกหรอเนี่ย !!",
