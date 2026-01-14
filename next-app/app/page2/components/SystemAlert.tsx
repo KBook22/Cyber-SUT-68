@@ -7,11 +7,12 @@ interface SystemAlertProps {
     message: string;
     hint: string;
     npcClass?: string;
-    
+    isFirstAppear?: boolean;
+
     hasInput?: boolean;
     inputPlaceholder?: string;
     submitLabel: string;
-    
+
     onVerify: (value: string) => Promise<{ success: boolean; message: string }>;
     onSuccess: () => void;
 }
@@ -21,6 +22,7 @@ export default function SystemAlert({
     message,
     hint,
     npcClass = "npc-image-large",
+    isFirstAppear = false,
     hasInput = false,
     inputPlaceholder = "",
     submitLabel,
@@ -34,10 +36,10 @@ export default function SystemAlert({
     const handleSubmit = async () => {
         setFeedbackMsg("Verifying...");
         setFeedbackType("");
-        
+
         // Simulate delay or async check
         const result = await onVerify(inputValue);
-        
+
         setFeedbackMsg(result.message);
         setFeedbackType(result.success ? "success" : "error");
 
@@ -51,7 +53,7 @@ export default function SystemAlert({
 
     return (
         <>
-            <div className="page2-npc-center">
+            <div className={`page2-npc-center ${isFirstAppear ? 'first-appear' : ''}`}>
                 <Image src={Pnpc} alt="NPC" width={800} height={1200} className={npcClass} />
             </div>
 

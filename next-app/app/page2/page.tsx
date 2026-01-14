@@ -12,7 +12,7 @@ import Particles from "./components/Particles";
 import SplashScreen from "../components/SplashScreen"; // Import SplashScreen
 import { allowlist } from "./allowlist";
 
-const npcName = "บุรุษปริศนา";
+const npcName = "Lord of Cyber";
 
 const introNarration = [
   // Scene 3: Waking up in the Ruins (SUT Context)
@@ -38,7 +38,14 @@ const locationSuccessDialogs = [
 
 const havIntroDialogs = [
   "บุรุษปริศนา: 'แต่การมีตัวตนในโลกกายภาพนั้นยังไม่เพียงพอ'",
-  "บุรุษปริศนา: 'เจ้ามีตราชั่งแห่งความรู้หรือไม่? ข้าสัมผัสไม่ได้ถึงมันเลย'",
+  "บุรุษปริศนา: 'ข้าต้องมั่นใจว่าเจ้ามีความสามารถในการแก้ไข Bug... และสามารถเข้าถึง Memory Fragment ที่กระจัดกระจายอยู่'",
+  "บุรุษปริศนา: 'จงพิสูจน์ว่าเจ้าสามารถเข้าถึงชิ้นส่วนความทรงจำเหล่านั้นได้'",
+];
+
+const reviewTimeIntroDialogs = [
+  "บุรุษปริศนา: 'Memory Fragment กู้คืนได้แล้ว... แต่เจ้ายังเดินทางอยู่บนเส้นทางอันเปล่าเปลี่ยว'",
+  "บุรุษปริศนา: 'ในดินแดนแตกสลายนี้ วิญญาณหลายดวงหายสาบสูญไปกับความมืดมน'",
+  "บุรุษปริศนา: 'บอกข้ามาสิ... ในห้องเรียนแห่งวิญญาณที่เจ้าเคยสังกัด... มีกี่ดวงที่ยังหลงเหลืออยู่?'",
 ];
 
 const knowledge1IntroDialogs = [
@@ -78,6 +85,8 @@ export default function Page2() {
     | "DIALOG_ACCEPTANCE"
     | "DIALOG_HAVE"
     | "MFA_HAVE"
+    | "DIALOG_REVIEW_TIME"
+    | "MFA_REVIEW_TIME"
     | "DIALOG_KNOWLEDGE_1"
     | "MFA_KNOWLEDGE_1"
     | "DIALOG_KNOWLEDGE_2"
@@ -86,6 +95,7 @@ export default function Page2() {
   >("INTRO_TEXT");
   const [glitchActive, setGlitchActive] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
+  const [npcFirstAppear, setNpcFirstAppear] = useState(true);
 
   const checkLocation = (lat: number, lon: number) => {
     const dist = Math.sqrt(
@@ -107,7 +117,7 @@ export default function Page2() {
   return (
     <div className="elden-quiz-page">
       <div style={{ display: "none" }} id="secret-store">
-        Token: SUT_GENESIS_2026
+        Token: FALLEN_TECHNOPOLIS_0x4A
       </div>
 
       <Particles />
@@ -135,10 +145,11 @@ export default function Page2() {
 
       {phase === "MFA_LOCATION" && (
         <SystemAlert
-          authStep="ยืนยันตัวตน: 1/4"
+          authStep="ยืนยันตัวตน: 1/5"
           message="วิญญาณเจ้าล่องลอย... จงพิสูจน์จุดยึดเหนี่ยวทางกายภาพ"
           hint="ส่งสัญญาณจากศูนย์รวมความศรัทธา (ลานดาว/ลานย่าโม)..."
           submitLabel="[ ส่งสัญญาณพิกัด ]"
+          isFirstAppear={npcFirstAppear}
           onVerify={async () => {
             return new Promise((resolve) => {
               if (!navigator.geolocation) {
@@ -177,7 +188,10 @@ export default function Page2() {
               );
             });
           }}
-          onSuccess={() => setPhase("DIALOG_ACCEPTANCE")}
+          onSuccess={() => {
+            setNpcFirstAppear(false);
+            setPhase("DIALOG_ACCEPTANCE");
+          }}
         />
       )}
 
@@ -197,10 +211,11 @@ export default function Page2() {
 
       {phase === "MFA_HAVE" && (
         <SystemAlert
-          authStep="ยืนยันตัวตน 2/4"
-          message="พิกัดถูกต้อง แล้วไหนตราชั่งแห่งความรู้ของเจ้า"
-          hint="[Hint: สร้าง Cookie ชื่อ 'SUT_STUDENT_ID' โดยให้ค่าเป็น '...']"
-          submitLabel="[ ตรวจสอบตราชั่ง ]"
+          authStep="ยืนยันตัวตน: 2/5"
+          message="จงพิสูจน์ว่าเจ้าสามารถเข้าถึง Memory Fragment ที่กระจัดกระจายอยู่"
+          hint="[Hint: สร้าง Cookie ชื่อ 'SUT_STUDENT_ID' โดยให้ค่าเป็นรหัสนักศึกษา]"
+          submitLabel="[ เข้าถึง Memory Fragment ]"
+          isFirstAppear={false}
           onVerify={async () => {
             const cookies = document.cookie.split(";").reduce((acc, cookie) => {
               const [name, value] = cookie.trim().split("=");
@@ -213,18 +228,51 @@ export default function Page2() {
             if (sid === "")
               return {
                 success: false,
-                message: "Error 403: ไม่พบ Cookie ที่ชื่อ 'SUT_STUDENT_ID'",
+                message: "Error 403: ไม่พบ Memory Fragment Identifier",
               };
 
             if (allowlist.has(sid))
               return {
                 success: true,
-                message: "ตรวจพบ Token: สิทธิ์การเข้าถึงถูกต้อง",
+                message: "เข้าถึงสำเร็จ: Memory Fragment กู้คืนได้",
               };
 
             return {
               success: false,
-              message: "Error 403: ข้าไม่รู้จักเจ้า",
+              message: "Error 403: Fragment ID ไม่ตรงกับฐานข้อมูล",
+            };
+          }}
+          onSuccess={() => setPhase("DIALOG_REVIEW_TIME")}
+        />
+      )}
+
+      {phase === "DIALOG_REVIEW_TIME" && (
+        <DialogSequence
+          dialogs={reviewTimeIntroDialogs}
+          onComplete={() => setPhase("MFA_REVIEW_TIME")}
+        />
+      )}
+
+      {phase === "MFA_REVIEW_TIME" && (
+        <SystemAlert
+          authStep="ยืนยันตัวตน: 3/5"
+          message="พิสูจน์ว่าเจ้าจำวิญญาณเพื่อนร่วมทางของเจ้าได้"
+          hint="นับจำนวนวิญญาณที่หลงเหลืออยู่ในห้องเรียนของเจ้า..."
+          submitLabel="[ ส่งคำตอบ ]"
+          hasInput
+          inputPlaceholder="ระบุจำนวนวิญญาณ"
+          npcClass="npc-image-large"
+          isFirstAppear={false}
+          onVerify={async (val) => {
+            if (val.trim() === "74") {
+              return {
+                success: true,
+                message: "ถูกต้อง! เจ้าจำวิญญาณทั้ง 74 ดวงได้",
+              };
+            }
+            return {
+              success: false,
+              message: "Error: จำนวนวิญญาณไม่ถูกต้อง เจ้าลืมเพื่อนไปแล้วหรือ?",
             };
           }}
           onSuccess={() => setPhase("DIALOG_KNOWLEDGE_1")}
@@ -240,15 +288,15 @@ export default function Page2() {
 
       {phase === "MFA_KNOWLEDGE_1" && (
         <SystemAlert
-          authStep="ยืนยันตัวตน: 3/4"
-          message="ตราชั่งถูกต้อง ต่อไปจงยืนยันแก่นแท้ของเจ้า"
-          hint="เอ่ยนามรหัสที่ซ่อนอยู่ในเงามืดของโลกนี้ (Source)..."
-          submitLabel="ตรวจสอบตราประทับ"
+          authStep="ยืนยันตัวตน: 4/5"
+          message="เจ้าพิสูจน์ความสามารถได้แล้ว ต่อไปจงค้นหาความลับที่ถูกซ่อนไว้"
+          hint="คว้าหาสตริงลับแห่งเมืองที่พังทลาย (Inspect Source Code: F12 > Elements)..."
+          submitLabel="ยืนยันความลับ"
           hasInput
           inputPlaceholder="ระบุ_KNOWLEDGE_TOKEN"
           npcClass="npc-image-large red-eyes"
           onVerify={async (val) => {
-            if (val.trim() === "SUT_GENESIS_2026" || val.trim() === "admin") {
+            if (val.trim() === "FALLEN_TECHNOPOLIS_0x4A" || val.trim() === "admin") {
               return {
                 success: true,
                 message: "ยืนยันตัวตนถูกต้อง อนุญาตให้เข้าถึง",
@@ -273,7 +321,7 @@ export default function Page2() {
 
       {phase === "MFA_KNOWLEDGE_2" && (
         <SystemAlert
-          authStep="ยืนยันตัวตน: 4/4"
+          authStep="ยืนยันตัวตน: 5/5"
           message="การตรวจสอบสุดท้าย จงเอ่ยนามของผู้ดูแล"
           hint="ผู้นำทางที่ยืนอยู่ตรงหน้าเจ้าคือใคร?"
           submitLabel="ตรวจสอบนามแห่ง Maiden"

@@ -812,7 +812,7 @@
 }
 
 .npc-container.appearing .npc-wrapper {
-    animation: npc-appear 1.5s ease forwards;
+    animation: npc-fade-in 2s ease forwards;
 }
 
 .npc-container.small {
@@ -854,6 +854,17 @@
         opacity: 1;
         transform: scale(1) translateY(0);
         filter: blur(0) drop-shadow(0 0 30px rgba(201, 162, 39, 0.3));
+    }
+}
+
+/* Fade-in animation for NPC without movement */
+@keyframes npc-fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
     }
 }
 
@@ -1093,7 +1104,8 @@
     left: 30%;
     bottom: -150px;
     z-index: 5;
-    animation: npc-appear 1s ease;
+    opacity: 0;
+    animation: npc-fade-in 2s ease forwards;
 }
 
 .npc-image-large {
@@ -1553,10 +1565,15 @@
     /* Slight offset bottom */
     transform: translateX(-50%);
     z-index: 5;
-    animation: npc-appear-center 1.5s ease forwards;
     width: 600px;
     /* Increased base width container */
     max-width: 90vw;
+}
+
+/* Animation only on first appearance */
+.page2-npc-center.first-appear {
+    opacity: 0;
+    animation: npc-fade-in 2s ease forwards;
 }
 
 /* Animation for centered NPC - keeps translateX(-50%) throughout */
