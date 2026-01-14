@@ -28,16 +28,21 @@ export const challenges: Challenge[] = [
     id: 1,
     title: "ด่านที่  1  :  ไม่ว่าจะเกิดอะไรขึ้น จงเดินหน้าต่อไป",
     description:
-      "--  เลขท้ายของปีพุทธศักราชของวันที่มหาวิทยาลัยเทคโนโลยีสุรนารีให้ความสำคัญ",
+      "จงเดินหน้าต่อไป ต่อไป ต่อไป !!",
     hints: [
       {
         title: "ข้อความเข้ารหัส",
         content: "cipher = EbiilPrOxKxobB_rKfsbopfQvDl_qlQbzekl",
       },
       {
-        title: "Hint",
+        title: "เทคนิคการถอดรหัส",
         content:
-          "Caesar Cipher\n27 กรกฎาคม 253..\nต้องตอบในรูปแบบ FLAG{cipher}",
+          "Caesar Cipher\n27 กรกฎาคม 253X\nต้องตอบในรูปแบบ FLAG{cipher}",
+      },
+        {
+        title: "คำใบ้เพิ่มเติม",
+        content:
+          "เลขท้ายปีพุทธศักราชของ วันที่มหาวิทยาลัยเทคโนโลยีสุรนารี ให้ความสำคัญ",
       },
     ],
     flag: "FLAG{HelloSuRaNareE_uNiversiTyGo_toTechno}",
@@ -60,7 +65,7 @@ export const challenges: Challenge[] = [
         content: "cipher = V3BuTnBPbkt6WGR2Z09keEZ6Tw==",
       },
       {
-        title: "Hint",
+        title: "เทคนิคการถอดรหัส",
         content:
           "Base64 + Caesar Cipher +5  (ไปข้างหน้า)\nต้องตอบในรูปแบบ FLAG{cipher}",
       },
@@ -68,7 +73,7 @@ export const challenges: Challenge[] = [
     flag: "FLAG{BusSuTsPeCialTicKeT}",
     backgroundImage: Number3.src,
     npcDialogue: [
-      "ฟู่ว มาถึงสักที",
+      "ฟู่ว~ มาถึงสักที",
       "อ๊ะ! นั่นมันรถบัส EV นี่นา",
       'แต่ดูเหมือนระบบจะล็อคอยู่ ต้องใช้ "ตั๋วรถบัส" ถึงจะขึ้นได้',
       "ช่วยฉันถอดรหัสเพื่อออกตั๋วรถบัสหน่อยสิ!",
@@ -117,14 +122,19 @@ FLAG อยู่ในภาพ`,
     description: "RSA Asymmetric + Base64 ..(https://gchq.github.io/CyberChef/)",
     hints: [
       {
-        title: "คำแนะนำ",
+        title: "ถอดรหัสเพื่อรับ Private Key",
         content:
           "Key = 67 72 69 69 82 76 69 65 68 69 82 \n32 79 78 69 84 87 79 79 78 69 84 87 79 84 72 82 69 \n69 79 78 69 84 87 79 79 78 69 84 87 79 79 78 69",
+      },
+      {
+        title: "คำแนะนำ",
+        content:
+          "ได้ Private Key มาแล้ว โหลดไฟล์ที่ให้เพื่อนำไปถอดรหัส RSA\nSchema: RSAES-PKCS1-V1-5 ",
       },
     ],
     // --- ส่วนที่เพิ่มใหม่สำหรับด่าน 4 ---
     preTask: {
-      question: "ถอดรหัส ASCII ออกมาเป็น..",
+      question: "ถอดรหัส ASCII ออกมาเป็น.. ตัวเลข",
       answer: "1212312121", // คำตอบคือ ADMIN
       lockedContentTitle: "CRITICAL DATA: Private Key",
       lockedContent: `-----BEGIN RSA PRIVATE KEY-----
@@ -151,7 +161,7 @@ tsLBoD17446C+W89gAip89MZlAJdPEXhBqKCThLuZJiw
       "ถึงแล้วอาคาร F11 ที่เรารัก",
       "อ..เอ๊ะ... ประตูล็อคระบบนิรภัย",
       "มันบอกว่าต้องยืนยันตัวตนด้วยการแก้รหัส",
-      "นี่มันระบบรักษาความปลอดภัยหรือข้อสอบเนี่ย...",
+      "นี่มันระบบรักษาความปลอดภัยหรือข้อสอบเนี่ย !!",
       "สิ่งศักดิ์สิทธิ์ สิ่งศักดิ์สิทธิ์ สิ่งศักดิ์สิทธิ์ !!!!",
     ],
   },
@@ -199,6 +209,11 @@ p และ q เป็นจำนวนเฉพาะที่เล็กพ
         title: "Hologram Message",
         content:
           "Secret Key:\n}neewteBsdnaLehTnOrekcaHfOdroLehTmAI{GALF",
+      },
+         {
+        title: "จงจำคำตอบที่ได้ไว้ให้ดี",
+        content:
+          "คำตอบนี้จะเป็นประโยชน์ต่อตัวคุณในอนาคต..",
       },
     ],
     flag: "FLAG{IAmTheLordOfHackerOnTheLandsBetween}",
